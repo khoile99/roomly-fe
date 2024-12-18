@@ -9,7 +9,7 @@ import { ApplicationNavigator } from "./Navigation";
 
 i18n.locale = Localization.locale;
 i18n.enableFallback = true;
-i18n.defaultLocale = Language.ENGLISH;
+i18n.defaultLocale = Language.VIETNAMESE;
 
 export default function App() {
   return (
