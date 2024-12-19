@@ -9,4 +9,9 @@ export const en = {
   [LocalizationKey.POST]: "Post",
   [LocalizationKey.SEARCH]: "Search",
   [LocalizationKey.FAVORITE]: "Favorite",
+  [LocalizationKey.LOGIN]: "Login",
+  [LocalizationKey.REGISTER]: "Register",
+  [LocalizationKey.LOGIN_WITH_ACCOUNT]: "Log in to your existing account",
+  [LocalizationKey.DONT_HAVE_ACCOUNT]: "You don't have account?",
+  [LocalizationKey.REGISTER_NOW]: "Register Now",
 };

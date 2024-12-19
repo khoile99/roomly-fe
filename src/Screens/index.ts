@@ -1,5 +1,6 @@
 export enum RootScreens {
   MAIN = "Main",
   WELCOME = "Welcome",
-  PROFILE = "Profile",
+  REGISTER = "Register",
+  LOGIN = "Login",
 }

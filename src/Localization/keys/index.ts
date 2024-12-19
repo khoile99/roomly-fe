@@ -7,4 +7,9 @@ export enum LocalizationKey {
   POST = "post",
   SEARCH = "search",
   FAVORITE = "favorite",
+  LOGIN = "login",
+  REGISTER = "register",
+  LOGIN_WITH_ACCOUNT = "login with account",
+  DONT_HAVE_ACCOUNT = "don't have account",
+  REGISTER_NOW = "register now"
 }
