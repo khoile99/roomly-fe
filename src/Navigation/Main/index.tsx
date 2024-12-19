@@ -23,7 +23,7 @@ export const MainNavigator = () => {
         options={{
           tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ size, focused, color }) => {
-            return HomeIcon;
+            return HomeIcon(color);
           }
         }}
       />
@@ -33,7 +33,7 @@ export const MainNavigator = () => {
         options={{
           tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ size, focused, color }) => {
-            return SearchIcon;
+            return SearchIcon(color);
           }
         }}
       />
@@ -43,7 +43,7 @@ export const MainNavigator = () => {
         options={{
           tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ size, focused, color }) => {
-            return PostIcon;
+            return PostIcon(color);
           }
         }}
       />
@@ -53,7 +53,7 @@ export const MainNavigator = () => {
         options={{
           tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ size, focused, color }) => {
-            return FavoriteIcon;
+            return FavoriteIcon(color);
           }
         }}
       />
@@ -63,8 +63,8 @@ export const MainNavigator = () => {
         options={{
           tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ size, focused, color }) => {
-            return ProfileIcon;
-          }
+            return ProfileIcon(color);
+          },
         }}
       />
     </Tab.Navigator>
