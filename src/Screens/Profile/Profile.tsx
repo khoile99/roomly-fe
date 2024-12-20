@@ -4,7 +4,6 @@ import { View, Text, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
 import { User } from "@/Services";
-import { NotLogin } from "./NotLogin";
 
 export interface IProfileProps {
   data: User | undefined;

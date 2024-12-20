@@ -34,6 +34,7 @@ const ApplicationNavigator = () => {
         <RootStack.Screen
           name={RootScreens.LOGIN}
           component={LoginContainer}
+          options={{headerShown: true}}
         />
         <RootStack.Screen
           name={RootScreens.MAIN}

@@ -1,9 +1,10 @@
 import { i18n, LocalizationKey } from "@/Localization";
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import PersonIcon from "assets/person-icon";
 import { Button } from "native-base";
 import { RootScreens } from "..";
+import { RegisterNow } from "@/Components/RegisterNow";
 
 
 export const NotLogin = (props: {
@@ -18,14 +19,7 @@ export const NotLogin = (props: {
                     {i18n.t(LocalizationKey.LOGIN)}
                 </Text>
             </Button>
-            <View style={styles.registerContainer}>
-                <Text>{i18n.t(LocalizationKey.DONT_HAVE_ACCOUNT)}</Text>
-                <TouchableOpacity activeOpacity={1} onPress={() => props.onNavigate(RootScreens.REGISTER)}>
-                    <Text style={styles.registerTxt}>
-                        {i18n.t(LocalizationKey.REGISTER_NOW)}
-                    </Text>
-                </TouchableOpacity>
-            </View>
+            <RegisterNow onNavigate={props.onNavigate}></RegisterNow>
         </View>
     );
 };
@@ -48,13 +42,4 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 600,
     },
-    registerContainer: {
-        flexDirection: "row",
-        gap: 20,
-    },
-    registerTxt: {
-        fontWeight: 600,
-        textDecorationLine: "underline",
-        color: "blue",
-    }
 });

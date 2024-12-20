@@ -11,5 +11,10 @@ export enum LocalizationKey {
   REGISTER = "register",
   LOGIN_WITH_ACCOUNT = "login with account",
   DONT_HAVE_ACCOUNT = "don't have account",
-  REGISTER_NOW = "register now"
+  REGISTER_NOW = "register now",
+  WELCOME_BACK = "welcome back",
+  ENTER_LOGIN = "enter login",
+  EMAIL = "email",
+  PASSWORD = "password",
+  FORGOT_PASSWORD = "forgot password",
 }

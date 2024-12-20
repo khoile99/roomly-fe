@@ -5,13 +5,9 @@ import { RootStackParamList } from "@/Navigation";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootScreens } from "..";
 
-type ProfileScreenNavigatorProps = NativeStackScreenProps<
-  RootStackParamList
->;
-
 export const ProfileContainer = ({
   navigation,
-}: ProfileScreenNavigatorProps) => {
+}: NativeStackScreenProps<RootStackParamList>) => {
   const onNavigate = (screen: RootScreens) => {
     navigation.navigate(screen);
   };
@@ -25,5 +21,5 @@ export const ProfileContainer = ({
   }, [fetchOne, userId]);
 
   // return <Profile data={data} isLoading={isLoading} />;
-  return <NotLogin onNavigate={onNavigate}/>;
+  return <NotLogin onNavigate={onNavigate} />;
 };
