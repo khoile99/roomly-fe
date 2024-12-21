@@ -4,3 +4,19 @@ export enum RootScreens {
   REGISTER = "Register",
   LOGIN = "Login",
 }
+
+export enum MainScreens {
+  HOME = "Home",
+  SEARCH = "Search",
+  POST = "Post",
+  FAVORITE = "Favorite",
+  PROFILE = "Profile",
+}
+
+export enum ProfileScreens {
+  PROFILE = "Profile",
+  PROFILE_INFORMATION = "Profile Information",
+  POST_MANAGE = "post-manage",
+  CHANGE_PASSWORD = "change-password",
+  LOGOUT = "logout",
+}

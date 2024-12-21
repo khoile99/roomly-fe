@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingVertical: 100,
-    paddingHorizontal: 50,
+    paddingHorizontal: 30,
   },
   innerContainer: {
     gap: 30,

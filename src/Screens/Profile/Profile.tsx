@@ -9,10 +9,12 @@ import FeatherIcon from "assets/feather-icon";
 import LockIcon from "assets/lock-icon";
 import LogoutIcon from "assets/logout-icon";
 import { ProfileNavigator } from "@/Components/ProfileNavigator";
+import { ProfileScreens } from "..";
 
 export interface IProfileProps {
   data: User | undefined;
   isLoading: boolean;
+  onNavigate: (string: ProfileScreens) => void;
 }
 
 export const Profile = (props: IProfileProps) => {
@@ -34,7 +36,7 @@ export const Profile = (props: IProfileProps) => {
             {data?.username}
           </Heading>
           <View style={styles.navigatorList}>
-            <ProfileNavigator onPress={() => { console.log("hello") }} title={i18n.t(LocalizationKey.PERSONAL_INFORMATION)} icon={RounderProfileIcon}></ProfileNavigator>
+            <ProfileNavigator onPress={() => { props.onNavigate(ProfileScreens.PROFILE_INFORMATION) }} title={i18n.t(LocalizationKey.PERSONAL_INFORMATION)} icon={RounderProfileIcon}></ProfileNavigator>
             <ProfileNavigator onPress={() => { console.log("hello") }} title={i18n.t(LocalizationKey.POST_MANAGE)} icon={FeatherIcon}></ProfileNavigator>
             <ProfileNavigator onPress={() => { console.log("hello") }} title={i18n.t(LocalizationKey.CHANGE_PASSWORD)} icon={LockIcon}></ProfileNavigator>
             <ProfileNavigator onPress={() => { console.log("hello") }} title={i18n.t(LocalizationKey.LOGOUT)} icon={LogoutIcon}></ProfileNavigator>
@@ -50,7 +52,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingVertical: 40,
-    paddingHorizontal: 50,
+    paddingHorizontal: 30,
     alignItems: "center",
   },
   img: {

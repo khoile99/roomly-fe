@@ -28,4 +28,10 @@ export const vi = {
   [LocalizationKey.POST_MANAGE]: "Quản lý bài đăng",
   [LocalizationKey.CHANGE_PASSWORD]: "Đổi mật khẩu",
   [LocalizationKey.LOGOUT]: "Đăng xuất",
+  [LocalizationKey.NAME]: "Tên",
+  [LocalizationKey.PHONE_NUMBER]: "Số điện thoại",
+  [LocalizationKey.BIRTH_DATE]: "Ngày sinh",
+  [LocalizationKey.EDIT]: "Chỉnh sửa",
+  [LocalizationKey.SAVE]: "Lưu",
+  [LocalizationKey.CANCLE]: "Hủy",
 };

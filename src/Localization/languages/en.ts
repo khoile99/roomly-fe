@@ -28,4 +28,10 @@ export const en = {
   [LocalizationKey.POST_MANAGE]: "Post manage",
   [LocalizationKey.CHANGE_PASSWORD]: "Change password",
   [LocalizationKey.LOGOUT]: "Logout",
+  [LocalizationKey.NAME]: "Name",
+  [LocalizationKey.PHONE_NUMBER]: "Phone Number",
+  [LocalizationKey.BIRTH_DATE]: "Birthdate",
+  [LocalizationKey.EDIT]: "Edit",
+  [LocalizationKey.SAVE]: "Save",
+  [LocalizationKey.CANCLE]: "Cancle",
 };

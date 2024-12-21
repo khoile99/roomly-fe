@@ -26,4 +26,10 @@ export enum LocalizationKey {
   POST_MANAGE = "post manage",
   CHANGE_PASSWORD = "change password",
   LOGOUT = "logout",
+  NAME = "name",
+  PHONE_NUMBER = "phone number",
+  BIRTH_DATE = "birth date",
+  EDIT = "edit",
+  SAVE = "save",
+  CANCLE = "cancle"
 }

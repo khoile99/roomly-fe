@@ -4,12 +4,13 @@ import { NotLogin } from "./NotLogin";
 import { Profile } from "./Profile";
 import { RootStackParamList } from "@/Navigation";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootScreens } from "..";
+import { ProfileScreens } from "..";
+import { ProfileStackParamList } from "@/Navigation/Main";
 
 export const ProfileContainer = ({
   navigation,
-}: NativeStackScreenProps<RootStackParamList>) => {
-  const onNavigate = (screen: RootScreens) => {
+}: NativeStackScreenProps<ProfileStackParamList>) => {
+  const onNavigate = (screen: ProfileScreens) => {
     navigation.navigate(screen);
   };
   const [userId, setUserId] = useState("9");
@@ -21,6 +22,6 @@ export const ProfileContainer = ({
     fetchOne(userId);
   }, [fetchOne, userId]);
 
-  return <Profile data={data} isLoading={isLoading} />;
+  return <Profile data={data} isLoading={isLoading} onNavigate={onNavigate}/>;
   // return <NotLogin onNavigate={onNavigate} />;
 };
