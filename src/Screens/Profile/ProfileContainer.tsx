@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLazyGetUserQuery } from "@/Services";
 import { NotLogin } from "./NotLogin";
+import { Profile } from "./Profile";
 import { RootStackParamList } from "@/Navigation";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootScreens } from "..";
@@ -20,6 +21,6 @@ export const ProfileContainer = ({
     fetchOne(userId);
   }, [fetchOne, userId]);
 
-  // return <Profile data={data} isLoading={isLoading} />;
-  return <NotLogin onNavigate={onNavigate} />;
+  return <Profile data={data} isLoading={isLoading} />;
+  // return <NotLogin onNavigate={onNavigate} />;
 };

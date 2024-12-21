@@ -24,4 +24,8 @@ export const vi = {
   [LocalizationKey.FORGOT_PASSWORD]: "Quên mật khẩu",
   [LocalizationKey.LAST_NAME]: "Họ và tên lót",
   [LocalizationKey.FIRST_NAME]: "Tên",
+  [LocalizationKey.PERSONAL_INFORMATION]: "Thông tin cá nhân",
+  [LocalizationKey.POST_MANAGE]: "Quản lý bài đăng",
+  [LocalizationKey.CHANGE_PASSWORD]: "Đổi mật khẩu",
+  [LocalizationKey.LOGOUT]: "Đăng xuất",
 };

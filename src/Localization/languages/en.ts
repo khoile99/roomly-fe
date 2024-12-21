@@ -24,4 +24,8 @@ export const en = {
   [LocalizationKey.PASSWORD]: "Password",
   [LocalizationKey.LAST_NAME]: "Last Name",
   [LocalizationKey.FIRST_NAME]: "First Name",
+  [LocalizationKey.PERSONAL_INFORMATION]: "Personal information",
+  [LocalizationKey.POST_MANAGE]: "Post manage",
+  [LocalizationKey.CHANGE_PASSWORD]: "Change password",
+  [LocalizationKey.LOGOUT]: "Logout",
 };

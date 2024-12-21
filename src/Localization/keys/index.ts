@@ -22,4 +22,8 @@ export enum LocalizationKey {
   FORGOT_PASSWORD = "forgot password",
   LAST_NAME = "last name",
   FIRST_NAME = "first name",
+  PERSONAL_INFORMATION = "personal information",
+  POST_MANAGE = "post manage",
+  CHANGE_PASSWORD = "change password",
+  LOGOUT = "logout",
 }
