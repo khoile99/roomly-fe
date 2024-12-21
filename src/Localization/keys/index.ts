@@ -31,5 +31,8 @@ export enum LocalizationKey {
   BIRTH_DATE = "birth date",
   EDIT = "edit",
   SAVE = "save",
-  CANCLE = "cancle"
+  CANCLE = "cancle",
+  OLD_PASSWORD = "old password",
+  NEW_PASSWORD = "new password",
+  ENTER_NEW_PASSWORD_AGAIN = "enter new password again",
 }

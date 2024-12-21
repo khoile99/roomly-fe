@@ -38,7 +38,7 @@ export const Profile = (props: IProfileProps) => {
           <View style={styles.navigatorList}>
             <ProfileNavigator onPress={() => { props.onNavigate(ProfileScreens.PROFILE_INFORMATION) }} title={i18n.t(LocalizationKey.PERSONAL_INFORMATION)} icon={RounderProfileIcon}></ProfileNavigator>
             <ProfileNavigator onPress={() => { console.log("hello") }} title={i18n.t(LocalizationKey.POST_MANAGE)} icon={FeatherIcon}></ProfileNavigator>
-            <ProfileNavigator onPress={() => { console.log("hello") }} title={i18n.t(LocalizationKey.CHANGE_PASSWORD)} icon={LockIcon}></ProfileNavigator>
+            <ProfileNavigator onPress={() => { props.onNavigate(ProfileScreens.CHANGE_PASSWORD) }} title={i18n.t(LocalizationKey.CHANGE_PASSWORD)} icon={LockIcon}></ProfileNavigator>
             <ProfileNavigator onPress={() => { console.log("hello") }} title={i18n.t(LocalizationKey.LOGOUT)} icon={LogoutIcon}></ProfileNavigator>
           </View>
         </>

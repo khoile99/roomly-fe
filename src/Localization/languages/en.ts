@@ -34,4 +34,7 @@ export const en = {
   [LocalizationKey.EDIT]: "Edit",
   [LocalizationKey.SAVE]: "Save",
   [LocalizationKey.CANCLE]: "Cancle",
+  [LocalizationKey.OLD_PASSWORD]: "Old password",
+  [LocalizationKey.NEW_PASSWORD]: "New password",
+  [LocalizationKey.ENTER_NEW_PASSWORD_AGAIN]: "Enter your new password again",
 };
