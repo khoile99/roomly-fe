@@ -35,4 +35,7 @@ export enum LocalizationKey {
   OLD_PASSWORD = "old password",
   NEW_PASSWORD = "new password",
   ENTER_NEW_PASSWORD_AGAIN = "enter new password again",
+  CONFIRM_LOGOUT = "confirm logout",
+  YES = "yes",
+  COME_BACK = "come back",
 }

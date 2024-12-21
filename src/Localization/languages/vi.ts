@@ -37,4 +37,7 @@ export const vi = {
   [LocalizationKey.OLD_PASSWORD]: "Mật khẩu cũ",
   [LocalizationKey.NEW_PASSWORD]: "Mật khẩu mới",
   [LocalizationKey.ENTER_NEW_PASSWORD_AGAIN]: "Nhập lại mật khẩu mới",
+  [LocalizationKey.CONFIRM_LOGOUT]: "bạn có chắc chắn muốn đăng xuất không?",
+  [LocalizationKey.YES]: "Có",
+  [LocalizationKey.COME_BACK]: "Quay lại",
 };

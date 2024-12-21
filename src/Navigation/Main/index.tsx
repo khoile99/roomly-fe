@@ -14,6 +14,7 @@ import ProfileIcon from "assets/profile-icon";
 import { ProfileScreens, MainScreens } from "@/Screens";
 import { ProfileInformationContainer } from "@/Screens/ProfileInformation";
 import { ChangePasswordContainer } from "@/Screens/ChangePassword";
+import { LogoutContainer } from "@/Screens/Logout";
 
 const Tab = createBottomTabNavigator();
 
@@ -99,6 +100,10 @@ const ProfileNavigator = () => {
       <ProfileStack.Screen
         name={ProfileScreens.CHANGE_PASSWORD}
         component={ChangePasswordContainer}
+      />
+      <ProfileStack.Screen
+        name={ProfileScreens.LOGOUT}
+        component={LogoutContainer}
       />
     </ProfileStack.Navigator>
   );
