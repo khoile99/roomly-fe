@@ -38,4 +38,6 @@ export enum LocalizationKey {
   CONFIRM_LOGOUT = "confirm logout",
   YES = "yes",
   COME_BACK = "come back",
+  MONTH = "month",
+  DELETE = "delete",
 }

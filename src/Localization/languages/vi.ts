@@ -40,4 +40,6 @@ export const vi = {
   [LocalizationKey.CONFIRM_LOGOUT]: "bạn có chắc chắn muốn đăng xuất không?",
   [LocalizationKey.YES]: "Có",
   [LocalizationKey.COME_BACK]: "Quay lại",
+  [LocalizationKey.MONTH]: "Tháng",
+  [LocalizationKey.DELETE]: "Xóa",
 };

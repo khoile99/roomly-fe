@@ -15,6 +15,7 @@ import { ProfileScreens, MainScreens } from "@/Screens";
 import { ProfileInformationContainer } from "@/Screens/ProfileInformation";
 import { ChangePasswordContainer } from "@/Screens/ChangePassword";
 import { LogoutContainer } from "@/Screens/Logout";
+import { PostManageContainer } from "@/Screens/PostManage";
 
 const Tab = createBottomTabNavigator();
 
@@ -96,6 +97,10 @@ const ProfileNavigator = () => {
       <ProfileStack.Screen
         name={ProfileScreens.PROFILE_INFORMATION}
         component={ProfileInformationContainer}
+      />
+      <ProfileStack.Screen
+        name={ProfileScreens.POST_MANAGE}
+        component={PostManageContainer}
       />
       <ProfileStack.Screen
         name={ProfileScreens.CHANGE_PASSWORD}

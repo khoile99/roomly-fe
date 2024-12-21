@@ -40,4 +40,6 @@ export const en = {
   [LocalizationKey.CONFIRM_LOGOUT]: "Are you sure you want to sign out?",
   [LocalizationKey.YES]: "Yes",
   [LocalizationKey.COME_BACK]: "Come back",
+  [LocalizationKey.MONTH]: "Month",
+  [LocalizationKey.DELETE]: "Delete",
 };
