@@ -1,5 +1,4 @@
 import { Login } from "./Login";
-import React, { useState, useEffect } from "react";
 import { RootScreens } from "..";
 import { RootStackParamList } from "@/Navigation";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";

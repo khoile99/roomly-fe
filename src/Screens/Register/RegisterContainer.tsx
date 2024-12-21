@@ -1,6 +1,13 @@
 import { Register } from "./Register";
-import React, { useState, useEffect } from "react";
+import { RootScreens } from "..";
+import { RootStackParamList } from "@/Navigation";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-export const RegisterContainer = () => {
-  return <Register />;
+export const RegisterContainer= ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList>) => {
+    const onNavigate = (screen: RootScreens) => {
+      navigation.navigate(screen);
+    };
+  return <Register onNavigate={onNavigate}/>;
 };

@@ -4,15 +4,15 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { RootScreens } from "@/Screens";
 
 
-export const RegisterNow = (props:
+export const LoginNow = (props:
     { onNavigate: (string: RootScreens) => void; }) => {
     return (
         <View>
             <View style={styles.registerContainer}>
-                <Text>{i18n.t(LocalizationKey.DONT_HAVE_ACCOUNT)}?</Text>
-                <TouchableOpacity activeOpacity={1} onPress={() => props.onNavigate(RootScreens.REGISTER)}>
+                <Text>{i18n.t(LocalizationKey.HAVE_ACCOUNT)}?</Text>
+                <TouchableOpacity activeOpacity={1} onPress={() => props.onNavigate(RootScreens.LOGIN)}>
                     <Text style={styles.registerTxt}>
-                        {i18n.t(LocalizationKey.REGISTER_NOW)}
+                        {i18n.t(LocalizationKey.LOGIN_NOW)}
                     </Text>
                 </TouchableOpacity>
             </View>

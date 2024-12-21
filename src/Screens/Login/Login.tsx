@@ -21,8 +21,8 @@ export const Login = (props: {
             {i18n.t(LocalizationKey.ENTER_LOGIN)}
           </Text>
         </View>
-        <TextInput placeholder={i18n.t(LocalizationKey.EMAIL)}></TextInput>
-        <TextInput placeholder={i18n.t(LocalizationKey.PASSWORD)}></TextInput>
+        <TextInput placeholder={i18n.t(LocalizationKey.EMAIL)} style={styles.input}></TextInput>
+        <TextInput placeholder={i18n.t(LocalizationKey.PASSWORD)} style={styles.input} secureTextEntry></TextInput>
         <View style={styles.btnContainer}>
           <Button style={{ width: "100%" }}>{i18n.t(LocalizationKey.LOGIN)}</Button>
           <Text>{i18n.t(LocalizationKey.FORGOT_PASSWORD)}?</Text>
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
   },
   innerContainer: {
-    gap: 50,
+    gap: 30,
   },
   txtHeader: {
     fontSize: 20,
@@ -51,5 +51,10 @@ const styles = StyleSheet.create({
   btnContainer: {
     gap: 20,
     alignItems: "center",
-  }
+  },
+  input: {
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 5
+  },
 });
