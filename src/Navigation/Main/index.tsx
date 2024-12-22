@@ -24,7 +24,7 @@ export const MainNavigator = () => {
           tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ size, focused, color }) => {
             return HomeIcon;
-          }
+          },
         }}
       />
       <Tab.Screen
@@ -34,7 +34,7 @@ export const MainNavigator = () => {
           tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ size, focused, color }) => {
             return SearchIcon;
-          }
+          },
         }}
       />
       <Tab.Screen
@@ -44,7 +44,7 @@ export const MainNavigator = () => {
           tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ size, focused, color }) => {
             return PostIcon;
-          }
+          },
         }}
       />
       <Tab.Screen
@@ -54,7 +54,7 @@ export const MainNavigator = () => {
           tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ size, focused, color }) => {
             return FavoriteIcon;
-          }
+          },
         }}
       />
       <Tab.Screen
@@ -64,7 +64,7 @@ export const MainNavigator = () => {
           tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ size, focused, color }) => {
             return ProfileIcon;
-          }
+          },
         }}
       />
     </Tab.Navigator>
