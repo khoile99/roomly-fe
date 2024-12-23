@@ -28,6 +28,8 @@ export interface User {
   phone: string;
   username: string;
   website: string;
+  birthdate: string,
+  password: string,
 }
 
 const userApi = API.injectEndpoints({
