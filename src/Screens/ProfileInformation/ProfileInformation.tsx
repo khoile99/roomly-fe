@@ -14,22 +14,25 @@ export interface IProfileInformationProps {
 export const ProfileInformation = (props: IProfileInformationProps) => {
   const { data, isLoading } = props;
   const onCancle = () => {
-    user = newUser();
+    setUser(newUser())
     setEdit(false);
-  };
+  }
   const onSave = () => {
     console.log(user);
-  };
+  }
   const newUser = () => {
     return {
+      id: 0,
+      lname: "",
+      fname: "",
       email: "",
-      name: "",
       phone: "",
-      birthdate: "",
+      createdAt: "",
+      updatedAt: "",
       password: "",
-    };
-  };
-  let user = newUser();
+    }
+  }
+  let [user, setUser] = React.useState(newUser());
   const [edit, setEdit] = React.useState(false);
   return (
     <ScrollView>
@@ -43,74 +46,33 @@ export const ProfileInformation = (props: IProfileInformationProps) => {
         </HStack>
       ) : (
         <View style={styles.container}>
-          <Image
-            source={require("assets/profile-sample.png")}
-            style={styles.img}
-          ></Image>
+          <Image source={require('assets/profile-sample.png')} style={styles.img}></Image>
           <View style={styles.innerContainer}>
             <View>
-              <Text style={styles.txtHeader}>
-                {i18n.t(LocalizationKey.NAME)}
-              </Text>
-              <TextInput
-                placeholder={data?.name}
-                style={styles.input}
-                editable={edit}
-                onChangeText={(newText) => (user.name = newText)}
-              >
-                {edit ? user.name : data?.name}
-              </TextInput>
+              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.LAST_NAME)}</Text>
+              <TextInput placeholder={data?.lname} style={styles.input} editable={edit} onChangeText={newText => user.lname = newText}>{edit ? user.lname : data?.lname}</TextInput>
             </View>
             <View>
-              <Text style={styles.txtHeader}>
-                {i18n.t(LocalizationKey.PHONE_NUMBER)}
-              </Text>
-              <TextInput
-                placeholder={data?.phone}
-                style={styles.input}
-                editable={edit}
-                onChangeText={(newText) => (user.phone = newText)}
-              >
-                {edit ? user.phone : data?.phone}
-              </TextInput>
+              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.FIRST_NAME)}</Text>
+              <TextInput placeholder={data?.fname} style={styles.input} editable={edit} onChangeText={newText => user.fname = newText}>{edit ? user.fname : data?.lname}</TextInput>
             </View>
             <View>
-              <Text style={styles.txtHeader}>
-                {i18n.t(LocalizationKey.EMAIL)}
-              </Text>
-              <TextInput
-                placeholder={data?.email}
-                style={styles.input}
-                editable={edit}
-                onChangeText={(newText) => (user.email = newText)}
-              >
-                {edit ? user.email : data?.email}
-              </TextInput>
+              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.PHONE_NUMBER)}</Text>
+              <TextInput placeholder={data?.phone} style={styles.input} editable={edit} onChangeText={newText => user.phone = newText}>{edit ? user.phone : data?.phone}</TextInput>
             </View>
             <View>
-              <Text style={styles.txtHeader}>
-                {i18n.t(LocalizationKey.BIRTH_DATE)}
-              </Text>
-              <TextInput
-                placeholder={data?.birthdate}
-                style={styles.input}
-                editable={edit}
-                onChangeText={(newText) => (user.birthdate = newText)}
-              >
-                {edit ? user.birthdate : data?.birthdate}
-              </TextInput>
+              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.EMAIL)}</Text>
+              <TextInput placeholder={data?.email} style={styles.input} editable={edit} onChangeText={newText => user.email = newText}>{edit ? user.email : data?.email}</TextInput>
             </View>
-            {edit ? (
-              <>
+            <View>
+              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.CREATED_DATE)}</Text>
+              <TextInput placeholder={data?.createdAt} style={styles.input} editable={edit} onChangeText={newText => user.createdAt = newText}>{edit ? user.createdAt : data?.createdAt}</TextInput>
+            </View>
+            {edit ?
+              (<>
                 <View>
-                  <Text style={styles.txtHeader}>
-                    {i18n.t(LocalizationKey.PASSWORD)}
-                  </Text>
-                  <TextInput
-                    secureTextEntry
-                    style={styles.input}
-                    onChangeText={(newText) => (user.password = newText)}
-                  ></TextInput>
+                  <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.PASSWORD)}</Text>
+                  <TextInput secureTextEntry style={styles.input} onChangeText={newText => user.password = newText}></TextInput>
                 </View>
                 <Button style={styles.btn} onPress={() => onSave()}>
                   {i18n.t(LocalizationKey.SAVE)}
@@ -118,16 +80,17 @@ export const ProfileInformation = (props: IProfileInformationProps) => {
                 <Button style={styles.btn} onPress={() => onCancle()}>
                   {i18n.t(LocalizationKey.CANCLE)}
                 </Button>
-              </>
-            ) : (
-              <Button style={styles.btn} onPress={() => setEdit(true)}>
-                {i18n.t(LocalizationKey.EDIT)}
-              </Button>
-            )}
+              </>) : (
+                <Button style={styles.btn} onPress={() => setEdit(true)}>
+                  {i18n.t(LocalizationKey.EDIT)}
+                </Button>
+              )
+            }
           </View>
         </View>
-      )}
-    </ScrollView>
+      )
+      }
+    </ScrollView >
   );
 };
 
@@ -142,8 +105,8 @@ const styles = StyleSheet.create({
   img: {
     width: 120,
     height: 120,
-    // objectFit: "cover",
-    borderRadius: 60,
+    objectFit: "cover",
+    borderRadius: "50%",
   },
   innerContainer: {
     marginTop: 30,
@@ -158,7 +121,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 5
   },
   btn: {
     borderRadius: 16,

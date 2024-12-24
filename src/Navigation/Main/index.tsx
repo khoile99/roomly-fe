@@ -16,7 +16,6 @@ import { ProfileInformationContainer } from "@/Screens/ProfileInformation";
 import { ChangePasswordContainer } from "@/Screens/ChangePassword";
 import { LogoutContainer } from "@/Screens/Logout";
 import { PostManageContainer } from "@/Screens/PostManage";
-import { EditPostContainer } from "@/Screens/EditPost";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +25,6 @@ export type ProfileStackParamList = {
   [ProfileScreens.POST_MANAGE]: undefined;
   [ProfileScreens.CHANGE_PASSWORD]: undefined;
   [ProfileScreens.LOGOUT]: undefined;
-  [ProfileScreens.EDIT_POST]: undefined;
 };
 const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
 
@@ -111,10 +109,6 @@ const ProfileNavigator = () => {
       <ProfileStack.Screen
         name={ProfileScreens.LOGOUT}
         component={LogoutContainer}
-      />
-      <ProfileStack.Screen
-        name={ProfileScreens.EDIT_POST}
-        component={EditPostContainer}
       />
     </ProfileStack.Navigator>
   );

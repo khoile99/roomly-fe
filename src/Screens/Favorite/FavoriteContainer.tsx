@@ -1,40 +1,20 @@
 import { Favorite } from "./Favorite";
 import React, { useState, useEffect } from "react";
-import { useLazyGetUserQuery } from "@/Services";
+import { useGetUserMutation } from "@/Services";
+import SecureStore from "@/Store/SecureStore";
 
 export const FavoriteContainer = () => {
-  const [userId, setUserId] = useState("9");
-
-  const data = [
-    {
-      id: "1",
-      name: "Nhà trọ Bình Tân",
-      address: "Long Thạnh Mỹ, quận 9",
-      price: "2.500.000",
-      url: "https://khoi-public.s3.ap-northeast-1.amazonaws.com/8bc7add356f6f20160387c15cae5e71a.png",
-    },
-    {
-      id: "2",
-      name: "Sunshine",
-      address: "Tô Hiến Thành, quận 10",
-      price: "4.500.000",
-      url: "https://khoi-public.s3.ap-northeast-1.amazonaws.com/8bc7add356f6f20160387c15cae5e71a.png",
-    },
-    {
-      id: "3",
-      name: "Galaxy",
-      address: "Lý Thường Kiệt, quận 10",
-      price: "3.500.000",
-      url: "https://khoi-public.s3.ap-northeast-1.amazonaws.com/8bc7add356f6f20160387c15cae5e71a.png",
-    },
-  ];
-
-  const [fetchOne, { isSuccess, isLoading, isFetching, error }] =
-    useLazyGetUserQuery();
+  const [fetchUser, { data, isSuccess, isLoading, error }] =
+    useGetUserMutation();
 
   useEffect(() => {
-    fetchOne(userId);
-  }, [fetchOne, userId]);
+    const fetchData = async () => {
+      const accessToken = await SecureStore.getAccessToken();
+      fetchUser({ accessToken });
+    };
 
-  return <Favorite data={data} isLoading={isLoading} />;
+    fetchData();
+  }, [fetchUser]);
+
+  return <Favorite data={data?.user} isLoading={isLoading} />;
 };
