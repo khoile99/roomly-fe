@@ -30,7 +30,7 @@ export const vi = {
   [LocalizationKey.LOGOUT]: "Đăng xuất",
   [LocalizationKey.NAME]: "Tên",
   [LocalizationKey.PHONE_NUMBER]: "Số điện thoại",
-  [LocalizationKey.BIRTH_DATE]: "Ngày sinh",
+  [LocalizationKey.CREATED_DATE]: "Ngày tạo",
   [LocalizationKey.EDIT]: "Chỉnh sửa",
   [LocalizationKey.SAVE]: "Lưu",
   [LocalizationKey.CANCLE]: "Hủy",

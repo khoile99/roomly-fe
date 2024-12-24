@@ -30,7 +30,7 @@ export const en = {
   [LocalizationKey.LOGOUT]: "Logout",
   [LocalizationKey.NAME]: "Name",
   [LocalizationKey.PHONE_NUMBER]: "Phone Number",
-  [LocalizationKey.BIRTH_DATE]: "Birthdate",
+  [LocalizationKey.CREATED_DATE]: "Created Date",
   [LocalizationKey.EDIT]: "Edit",
   [LocalizationKey.SAVE]: "Save",
   [LocalizationKey.CANCLE]: "Cancle",

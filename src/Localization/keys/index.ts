@@ -28,7 +28,7 @@ export enum LocalizationKey {
   LOGOUT = "logout",
   NAME = "name",
   PHONE_NUMBER = "phone number",
-  BIRTH_DATE = "birth date",
+  CREATED_DATE = "created date",
   EDIT = "edit",
   SAVE = "save",
   CANCLE = "cancle",

@@ -1,35 +1,18 @@
 import { API } from "../base";
 
-export interface Geo {
-  lat: string;
-  lng: string;
-}
-
-export interface Address {
-  city: string;
-  geo: Geo;
-  street: string;
-  suite: string;
-  zipcode: string;
-}
-
-export interface Company {
-  bs: string;
-  catchPhrase: string;
-  name: string;
+interface UserResponse {
+  success: Boolean;
+  user: User;
 }
 
 export interface User {
-  address: Address;
-  company: Company;
-  email: string;
   id: number;
-  name: string;
+  lname: string;
+  fname: string;
+  email: string;
   phone: string;
-  username: string;
-  website: string;
-  birthdate: string,
-  password: string,
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface LoginRequest {
@@ -58,8 +41,14 @@ export interface LoginResponse extends Message {
 
 const userApi = API.injectEndpoints({
   endpoints: (build) => ({
-    getUser: build.query<User, string>({
-      query: (id) => `users/${id}`,
+    getUser: build.mutation<UserResponse, { accessToken: string }>({
+      query: ({ accessToken }) => ({
+        url: "user/get-info",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        }
+      }),
     }),
     login: build.mutation<LoginResponse, LoginRequest>({
       query: (body) => ({
@@ -82,4 +71,4 @@ const userApi = API.injectEndpoints({
   overrideExisting: true,
 });
 
-export const { useLazyGetUserQuery, useLoginMutation, useChangePasswordMutation } = userApi;
+export const { useGetUserMutation, useLoginMutation, useChangePasswordMutation } = userApi;

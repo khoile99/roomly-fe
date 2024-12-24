@@ -26,7 +26,7 @@ export const Search = (props: ISearchProps) => {
         <>
           <Text>{i18n.t(LocalizationKey.SEARCH)}</Text>
           <Heading color="primary.500" fontSize="md">
-            {data?.username}
+            {`${data?.lname} ${data?.fname}`}
           </Heading>
         </>
       )}

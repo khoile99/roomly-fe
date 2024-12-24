@@ -1,16 +1,20 @@
 import { Search } from "./Search";
 import React, { useState, useEffect } from "react";
-import { useLazyGetUserQuery } from "@/Services";
+import { useGetUserMutation } from "@/Services";
+import SecureStore from "@/Store/SecureStore";
 
 export const SearchContainer = () => {
-  const [userId, setUserId] = useState("9");
-
-  const [fetchOne, { data, isSuccess, isLoading, isFetching, error }] =
-    useLazyGetUserQuery();
+  const [fetchUser, { data, isSuccess, isLoading, error }] =
+    useGetUserMutation();
 
   useEffect(() => {
-    fetchOne(userId);
-  }, [fetchOne, userId]);
+    const fetchData = async () => {
+      const accessToken = await SecureStore.getAccessToken();
+      fetchUser({ accessToken });
+    };
 
-  return <Search data={data} isLoading={isLoading} />;
+    fetchData();
+  }, [fetchUser]);
+
+  return <Search data={data?.user} isLoading={isLoading} />;
 };

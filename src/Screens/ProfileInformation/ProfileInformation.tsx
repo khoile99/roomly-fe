@@ -14,7 +14,7 @@ export interface IProfileInformationProps {
 export const ProfileInformation = (props: IProfileInformationProps) => {
   const { data, isLoading } = props;
   const onCancle = () => {
-    user = newUser();
+    setUser(newUser())
     setEdit(false);
   }
   const onSave = () => {
@@ -22,14 +22,17 @@ export const ProfileInformation = (props: IProfileInformationProps) => {
   }
   const newUser = () => {
     return {
+      id: 0,
+      lname: "",
+      fname: "",
       email: "",
-      name: "",
       phone: "",
-      birthdate: "",
-      password: ""
+      createdAt: "",
+      updatedAt: "",
+      password: "",
     }
   }
-  let user = newUser();
+  let [user, setUser] = React.useState(newUser());
   const [edit, setEdit] = React.useState(false);
   return (
     <ScrollView>
@@ -46,8 +49,12 @@ export const ProfileInformation = (props: IProfileInformationProps) => {
           <Image source={require('assets/profile-sample.png')} style={styles.img}></Image>
           <View style={styles.innerContainer}>
             <View>
-              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.NAME)}</Text>
-              <TextInput placeholder={data?.name} style={styles.input} editable={edit} onChangeText={newText => user.name = newText}>{edit ? user.name : data?.name}</TextInput>
+              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.LAST_NAME)}</Text>
+              <TextInput placeholder={data?.lname} style={styles.input} editable={edit} onChangeText={newText => user.lname = newText}>{edit ? user.lname : data?.lname}</TextInput>
+            </View>
+            <View>
+              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.FIRST_NAME)}</Text>
+              <TextInput placeholder={data?.fname} style={styles.input} editable={edit} onChangeText={newText => user.fname = newText}>{edit ? user.fname : data?.lname}</TextInput>
             </View>
             <View>
               <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.PHONE_NUMBER)}</Text>
@@ -58,8 +65,8 @@ export const ProfileInformation = (props: IProfileInformationProps) => {
               <TextInput placeholder={data?.email} style={styles.input} editable={edit} onChangeText={newText => user.email = newText}>{edit ? user.email : data?.email}</TextInput>
             </View>
             <View>
-              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.BIRTH_DATE)}</Text>
-              <TextInput placeholder={data?.birthdate} style={styles.input} editable={edit} onChangeText={newText => user.birthdate = newText}>{edit ? user.birthdate : data?.birthdate}</TextInput>
+              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.CREATED_DATE)}</Text>
+              <TextInput placeholder={data?.createdAt} style={styles.input} editable={edit} onChangeText={newText => user.createdAt = newText}>{edit ? user.createdAt : data?.createdAt}</TextInput>
             </View>
             {edit ?
               (<>

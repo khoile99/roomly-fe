@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLazyGetUserQuery } from "@/Services";
+import { useGetUserMutation } from "@/Services";
 import { NotLogin } from "./NotLogin";
 import { Profile } from "./Profile";
 import { RootStackParamList } from "@/Navigation";
@@ -9,7 +9,7 @@ import { ProfileStackParamList } from "@/Navigation/Main";
 import SecureStore from "@/Store/SecureStore";
 import { useFocusEffect } from "@react-navigation/native";
 
-type TotalScreen = NativeStackScreenProps<  RootStackParamList &  ProfileStackParamList>;
+type TotalScreen = NativeStackScreenProps<RootStackParamList & ProfileStackParamList>;
 
 export const ProfileContainer = ({
   navigation,
@@ -25,8 +25,8 @@ export const ProfileContainer = ({
     navigation.navigate(screen);
   };
 
-  const [fetchOne, { data, isSuccess, isLoading, isFetching, error }] =
-    useLazyGetUserQuery();
+  const [fetchUser, { data, isSuccess, isLoading, error }] =
+    useGetUserMutation();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -43,13 +43,16 @@ export const ProfileContainer = ({
   );
 
   useEffect(() => {
-    if (accessToken) {
-      fetchOne(userId);
-    }
-  }, [fetchOne, userId, accessToken]);
+    const fetchData = async () => {
+      const accessToken = await SecureStore.getAccessToken();
+      fetchUser({ accessToken });
+    };
+
+    fetchData();
+  }, [fetchUser]);
 
   if (!accessToken) {
     return <NotLogin onNavigate={onNavigateRootScreen} />;
   }
-  return <Profile data={data} isLoading={isLoading} onNavigate={onNavigateProfileScreen}/>;
+  return <Profile data={data?.user} isLoading={isLoading} onNavigate={onNavigateProfileScreen} />;
 };

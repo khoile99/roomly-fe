@@ -26,7 +26,7 @@ export const Favorite = (props: IFavoriteProps) => {
         <>
           <Text>{i18n.t(LocalizationKey.FAVORITE)}</Text>
           <Heading color="primary.500" fontSize="md">
-            {data?.username}
+            {`${data?.lname} ${data?.fname}`}
           </Heading>
         </>
       )}
