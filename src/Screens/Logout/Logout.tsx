@@ -12,7 +12,8 @@ export const Logout = (props: {
       <PopUp
         title={i18n.t(LocalizationKey.CONFIRM_LOGOUT)}
         pressOK={() => console.log("logout")}
-        pressBack={() => props.onNavigate(ProfileScreens.PROFILE)} />
+        pressBack={() => props.onNavigate(ProfileScreens.PROFILE)}
+      />
     </View>
   );
 };
