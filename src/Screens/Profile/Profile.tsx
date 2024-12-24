@@ -19,6 +19,7 @@ export interface IProfileProps {
 
 export const Profile = (props: IProfileProps) => {
   const { data, isLoading } = props;
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
