@@ -4,12 +4,29 @@ import { Button } from "native-base";
 import React from "react";
 import { View, StyleSheet, Text, TextInput } from "react-native";
 import { RootScreens } from "..";
+import { useLoginMutation } from "@/Services";
 
 
 
 export const Login = (props: {
   onNavigate: (string: RootScreens) => void;
 }) => {
+  const [user, setUser] = React.useState({ info_user: "", password: "" });
+  const [login, { isLoading, isError, error }] = useLoginMutation();
+
+  const onLogin = async () => {
+    try {
+      console.log(user);
+      const response = await login(user).unwrap();
+      console.log("Login successful:", response);
+
+
+      // props.onNavigate("Home"); // Replace "Home" with your target screen
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
@@ -21,10 +38,10 @@ export const Login = (props: {
             {i18n.t(LocalizationKey.ENTER_LOGIN)}
           </Text>
         </View>
-        <TextInput placeholder={i18n.t(LocalizationKey.EMAIL)} style={styles.input}></TextInput>
-        <TextInput placeholder={i18n.t(LocalizationKey.PASSWORD)} style={styles.input} secureTextEntry></TextInput>
+        <TextInput placeholder={i18n.t(LocalizationKey.EMAIL)} style={styles.input} value={user.info_user} onChangeText={(newText) => setUser((prev) => ({ ...prev, info_user: newText }))}></TextInput>
+        <TextInput placeholder={i18n.t(LocalizationKey.PASSWORD)} style={styles.input} value={user.password} onChangeText={(newText) => setUser((prev) => ({ ...prev, password: newText }))} secureTextEntry></TextInput>
         <View style={styles.btnContainer}>
-          <Button style={{ width: "100%" }}>{i18n.t(LocalizationKey.LOGIN)}</Button>
+          <Button style={{ width: "100%" }} onPress={()=>onLogin()}>{i18n.t(LocalizationKey.LOGIN)}</Button>
           <Text>{i18n.t(LocalizationKey.FORGOT_PASSWORD)}?</Text>
           <RegisterNow onNavigate={props.onNavigate}></RegisterNow>
         </View>
