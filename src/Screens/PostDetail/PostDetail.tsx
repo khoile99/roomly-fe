@@ -151,6 +151,7 @@ export const PostDetail = (props: IPostDetailProps) => {
               <Text style={styles.roomTitle}>Tiện nghi</Text>
               <FlatList
                 data={amenitiesData}
+                numColumns={2}
                 renderItem={({ item }) => (
                   <View style={styles.itemContainer}>
                     <Icon name={item.icon} size={24} color="#000" />
@@ -238,7 +239,181 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingHorizontal: 16,
+  },
+
+  header: {
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    padding: 16,
+    backgroundColor: "#2196F3",
+  },
+  headerTitle: {
+    marginLeft: 16,
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  mainImage: { width: "100%", height: 200, borderRadius: 8 },
+  details: { padding: 16 },
+  roomTitle: { fontSize: 18, fontWeight: "bold" },
+  roomPrice: {
+    fontSize: 16,
+    color: "#f00",
+    marginVertical: 8,
+    borderRadius: 4,
+    border: "1px solid #f00",
+  },
+  roomLocation: { fontSize: 14, color: "#555" },
+
+  details1: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 16,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+  },
+  detailItem: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  detailItemCenter: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    paddingHorizontal: 14,
+  },
+  detailText: {
+    marginLeft: 5,
+    fontSize: 14,
+    color: "#555",
+  },
+  infoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    marginTop: 10,
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 12,
+  },
+  textContainer: {
+    flex: 1,
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  role: {
+    fontSize: 14,
+    color: "#888",
+  },
+  phoneIcon: {
+    width: 24,
+    height: 24,
+  },
+
+  extendConatiner: {
+    flexDirection: "row",
+  },
+
+  itemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 8,
+    width: "30%",
+
+    flexWrap: "wrap",
+    display: "flex",
+    flexDirection: "row",
+    // justifyContent: "space-between",
+  },
+  itemText: {
+    marginLeft: 10,
+    fontSize: 16,
+  },
+  infoRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 8,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  value: {
+    fontSize: 16,
+    color: "#555", // Màu xám cho giá trị
+  },
+  map: {
+    height: 200,
+    padding: 16,
+    paddingVertical: 8,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 12,
+  },
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  card: {
+    width: "48%", // Chiều rộng của mỗi thẻ
+    backgroundColor: "#f9f9f9",
+    padding: 10,
+    marginBottom: 16,
+    borderRadius: 8,
+    elevation: 2,
+  },
+  image: {
+    width: "100%",
+    height: 100,
+    borderRadius: 8,
+  },
+  roomName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginVertical: 4,
+  },
+  price: {
+    color: "#e91e63",
+    fontWeight: "bold",
+  },
+  containerButton: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingHorizontal: 16,
+    alignItems: "center",
+  },
+  button: {
+    backgroundColor: "#00A3E0", // Màu nền của nút
+    padding: 15,
+    borderRadius: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    // marginLeft: 8,
+    paddingLeft: 30,
+    paddingRight: 30,
   },
 });
