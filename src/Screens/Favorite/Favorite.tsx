@@ -1,6 +1,5 @@
 import { i18n, LocalizationKey } from "@/Localization";
 import React from "react";
-// import { View, Text, StyleSheet } from "react-native";
 import {
   View,
   Text,
@@ -16,9 +15,11 @@ import MapView, { Marker } from "react-native-maps";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
 import { User } from "@/Services";
+import { Place } from "@/Services";
+import { PlaceCardFavorite } from "@/Components/PlaceCard";
 
 export interface IFavoriteProps {
-  data: User | undefined;
+  data: Place[] | undefined;
   isLoading: boolean;
 }
 
@@ -26,7 +27,7 @@ export const Favorite = (props: IFavoriteProps) => {
   const { data, isLoading } = props;
 
   return (
-    <View style={styles.container}>
+    <ScrollView>
       <StatusBar style="auto" />
       {isLoading ? (
         <HStack space={2} justifyContent="center">
@@ -36,22 +37,34 @@ export const Favorite = (props: IFavoriteProps) => {
           </Heading>
         </HStack>
       ) : (
-        <>
-          <Text>{i18n.t(LocalizationKey.FAVORITE)}</Text>
-          <Heading color="primary.500" fontSize="md">
-            {data?.username}
-          </Heading>
-        </>
+        <View style={styles.container}>
+          {data?.map((place) => {
+            return (
+              <PlaceCardFavorite
+                place={place}
+                key={place.id}
+                pressDelete={() => {
+                  console.log(`delete ${place.id}`);
+                }}
+                pressEdit={() => {
+                  navigation.navigate("Edit Post", { id: place.id });
+                }}
+              ></PlaceCardFavorite>
+            );
+          })}
+        </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    padding: 10,
+    flexWrap: "wrap",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 20,
   },
 });
