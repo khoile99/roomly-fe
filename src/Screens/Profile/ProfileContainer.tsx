@@ -7,6 +7,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ProfileScreens, RootScreens } from "..";
 import { ProfileStackParamList } from "@/Navigation/Main";
 import SecureStore from "@/Store/SecureStore";
+import { useFocusEffect } from "@react-navigation/native";
 
 type TotalScreen = NativeStackScreenProps<  RootStackParamList &  ProfileStackParamList>;
 
@@ -27,13 +28,19 @@ export const ProfileContainer = ({
   const [fetchOne, { data, isSuccess, isLoading, isFetching, error }] =
     useLazyGetUserQuery();
 
-  useEffect(() => {
-    const fetchAccessToken = async () => {
-      const token = await SecureStore.getAccessToken();
-      setAccessToken(token);
-    };
-    fetchAccessToken();
-  }, [fetchOne, userId]);
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchAccessToken = async () => {
+        try {
+          const token = await SecureStore.getAccessToken();
+          setAccessToken(token);
+        } catch (err) {
+          console.error("Error fetching access token:", err);
+        }
+      };
+      fetchAccessToken();
+    }, [])
+  );
 
   useEffect(() => {
     if (accessToken) {

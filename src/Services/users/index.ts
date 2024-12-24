@@ -37,9 +37,21 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface LoginResponse {
-  success: Boolean;
+export interface ChangePasswordRequest {
+  old_password: string;
+  new_password: string;
+}
+
+export interface ResponseFail {
+  data: Message;
+}
+
+export interface Message {
   message: string;
+  success: Boolean;
+}
+
+export interface LoginResponse extends Message {
   access_token: string,
   refresh_token: string,
 }
@@ -50,14 +62,24 @@ const userApi = API.injectEndpoints({
       query: (id) => `users/${id}`,
     }),
     login: build.mutation<LoginResponse, LoginRequest>({
-      query: (credentials) => ({
+      query: (body) => ({
         url: "user/login",
         method: "POST",
+        body: body,
+      }),
+    }),
+    changePassword: build.mutation<Message, { accessToken: string, body: ChangePasswordRequest }>({
+      query: ({ accessToken, body: credentials }) => ({
+        url: "user/change-pass",
+        method: "POST",
         body: credentials,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        }
       }),
     }),
   }),
   overrideExisting: true,
 });
 
-export const { useLazyGetUserQuery, useLoginMutation } = userApi;
+export const { useLazyGetUserQuery, useLoginMutation, useChangePasswordMutation } = userApi;

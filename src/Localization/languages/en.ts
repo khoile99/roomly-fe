@@ -37,6 +37,7 @@ export const en = {
   [LocalizationKey.OLD_PASSWORD]: "Old password",
   [LocalizationKey.NEW_PASSWORD]: "New password",
   [LocalizationKey.ENTER_NEW_PASSWORD_AGAIN]: "Enter your new password again",
+  [LocalizationKey.CHANGE_PASSWORD_FAIL]: "Change Password Fail",
   [LocalizationKey.CONFIRM_LOGOUT]: "Are you sure you want to sign out?",
   [LocalizationKey.YES]: "Yes",
   [LocalizationKey.COME_BACK]: "Come back",

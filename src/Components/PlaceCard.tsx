@@ -12,12 +12,13 @@ export const PlaceCard = (props:
     pressDelete: () => void;
     pressEdit: () => void;
   }) => {
+  const urls = ["https://khoi-public.s3.ap-northeast-1.amazonaws.com/8bc7add356f6f20160387c15cae5e71a.png"]
   return (
     <View style={styles.container}>
-      <Image style={styles.img} src={props.place.url} />
+      <Image style={styles.img} src={urls[0]} />
       <View style={styles.innerContainer}>
         <Text style={styles.title}>
-          {props.place.name}
+          {props.place.namePost}
         </Text>
         <View style={styles.address}>
           <PlaceMarkerIcon />

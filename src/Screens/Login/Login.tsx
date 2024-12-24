@@ -1,10 +1,11 @@
 import { RegisterNow } from "@/Components/RegisterNow";
 import { i18n, LocalizationKey } from "@/Localization";
-import { Button } from "native-base";
+import { Button, Heading, HStack, Spinner } from "native-base";
 import React from "react";
 import { View, StyleSheet, Text, TextInput } from "react-native";
 import { RootScreens } from "..";
-import { useLoginMutation } from "@/Services";
+import { ResponseFail, useLoginMutation } from "@/Services";
+import SecureStore from "@/Store/SecureStore";
 
 
 
@@ -16,14 +17,12 @@ export const Login = (props: {
 
   const onLogin = async () => {
     try {
-      console.log(user);
       const response = await login(user).unwrap();
-      console.log("Login successful:", response);
-
-
-      // props.onNavigate("Home"); // Replace "Home" with your target screen
+      SecureStore.setAccessToken(response.access_token)
+      props.onNavigate(RootScreens.MAIN);
     } catch (err) {
-      console.error("Login failed:", err);
+      const error = err as ResponseFail;
+      alert(error.data.message);
     }
   };
 
@@ -41,10 +40,18 @@ export const Login = (props: {
         <TextInput placeholder={i18n.t(LocalizationKey.EMAIL)} style={styles.input} value={user.info_user} onChangeText={(newText) => setUser((prev) => ({ ...prev, info_user: newText }))}></TextInput>
         <TextInput placeholder={i18n.t(LocalizationKey.PASSWORD)} style={styles.input} value={user.password} onChangeText={(newText) => setUser((prev) => ({ ...prev, password: newText }))} secureTextEntry></TextInput>
         <View style={styles.btnContainer}>
-          <Button style={{ width: "100%" }} onPress={()=>onLogin()}>{i18n.t(LocalizationKey.LOGIN)}</Button>
+          <Button style={{ width: "100%" }} onPress={() => onLogin()}>{i18n.t(LocalizationKey.LOGIN)}</Button>
           <Text>{i18n.t(LocalizationKey.FORGOT_PASSWORD)}?</Text>
           <RegisterNow onNavigate={props.onNavigate}></RegisterNow>
         </View>
+        {isLoading && (
+          <HStack space={2} justifyContent="center">
+            <Spinner accessibilityLabel="Loading posts" />
+            <Heading color="primary.500" fontSize="md">
+              {i18n.t(LocalizationKey.LOADING)}
+            </Heading>
+          </HStack>
+        )}
       </View>
     </View>
   );

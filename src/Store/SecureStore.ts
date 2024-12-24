@@ -14,6 +14,10 @@ async function getKey(key: string): Promise<string> {
   return result;
 }
 
+async function deleteKey(key: string):Promise<void> {
+  await SecureStore.deleteItemAsync(key);
+}
+
 async function getAccessToken(): Promise<string> {
     return await getKey(ACCESS_TOKEN_KEY)
 }
@@ -22,9 +26,15 @@ async function setAccessToken(accessToken: string): Promise<void> {
     await setKey(ACCESS_TOKEN_KEY, accessToken)
 }
 
+async function deleteAccessToken(): Promise<void> {
+  await deleteKey(ACCESS_TOKEN_KEY)
+}
+
 export default {
     setKey,
     getKey,
+    deleteKey,
     getAccessToken,
     setAccessToken,
+    deleteAccessToken,
 }
