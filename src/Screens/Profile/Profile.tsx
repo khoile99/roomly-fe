@@ -1,6 +1,6 @@
 import { i18n, LocalizationKey } from "@/Localization";
 import React from "react";
-// import { View, Text, StyleSheet } from "react-native";
+// import { View, Text, StyleSheet, Image } from "react-native";
 import {
   View,
   Text,
@@ -10,12 +10,19 @@ import {
   Image,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { HStack, Spinner, Heading } from "native-base";
+import { HStack, Spinner, Heading, Button } from "native-base";
 import { User } from "@/Services";
+import RounderProfileIcon from "assets/rounded-profile-icon";
+import FeatherIcon from "assets/feather-icon";
+import LockIcon from "assets/lock-icon";
+import LogoutIcon from "assets/logout-icon";
+import { ProfileNavigator } from "@/Components/ProfileNavigator";
+import { ProfileScreens } from "..";
 
 export interface IProfileProps {
   data: User | undefined;
   isLoading: boolean;
+  onNavigate: (string: ProfileScreens) => void;
 }
 
 export const Profile = (props: IProfileProps) => {
@@ -32,10 +39,43 @@ export const Profile = (props: IProfileProps) => {
         </HStack>
       ) : data?.User ? (
         <>
-          <Spinner accessibilityLabel="Loading posts" />
-          <Heading color="primary.500" fontSize="md">
-            {i18n.t(LocalizationKey.LOADING)}
+          <Image
+            source={require("assets/profile-sample.png")}
+            style={styles.img}
+          ></Image>
+          <Heading fontSize="md" style={styles.usernameTxt}>
+            {data?.username}
           </Heading>
+          <View style={styles.navigatorList}>
+            <ProfileNavigator
+              onPress={() => {
+                props.onNavigate(ProfileScreens.PROFILE_INFORMATION);
+              }}
+              title={i18n.t(LocalizationKey.PERSONAL_INFORMATION)}
+              icon={RounderProfileIcon}
+            ></ProfileNavigator>
+            <ProfileNavigator
+              onPress={() => {
+                props.onNavigate(ProfileScreens.POST_MANAGE);
+              }}
+              title={i18n.t(LocalizationKey.POST_MANAGE)}
+              icon={FeatherIcon}
+            ></ProfileNavigator>
+            <ProfileNavigator
+              onPress={() => {
+                props.onNavigate(ProfileScreens.CHANGE_PASSWORD);
+              }}
+              title={i18n.t(LocalizationKey.CHANGE_PASSWORD)}
+              icon={LockIcon}
+            ></ProfileNavigator>
+            <ProfileNavigator
+              onPress={() => {
+                props.onNavigate(ProfileScreens.LOGOUT);
+              }}
+              title={i18n.t(LocalizationKey.LOGOUT)}
+              icon={LogoutIcon}
+            ></ProfileNavigator>
+          </View>
         </>
       ) : (
         <View style={styles.container}>
@@ -77,47 +117,21 @@ export const Profile = (props: IProfileProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#fff",
-    paddingHorizontal: 20,
-  },
-  iconContainer: {
-    marginBottom: 20,
-  },
-  icon: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-  },
-  description: {
-    fontSize: 16,
-    color: "#7f8c8d",
-    marginBottom: 30,
-  },
-  loginButton: {
-    backgroundColor: "#4AA8FF",
-    paddingVertical: 15,
-    paddingHorizontal: 80,
-    borderRadius: 8,
-    marginBottom: 20,
-  },
-  loginText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  registerContainer: {
-    flexDirection: "row",
+    paddingVertical: 40,
+    paddingHorizontal: 30,
     alignItems: "center",
   },
-  registerText: {
-    fontSize: 14,
-    color: "#7f8c8d",
+  img: {
+    width: 120,
+    height: 120,
+    objectFit: "cover",
+    borderRadius: "50%",
   },
-  registerLink: {
-    fontSize: 14,
-    color: "#000",
-    fontWeight: "bold",
+  usernameTxt: {
+    marginTop: 20,
+  },
+  navigatorList: {
+    marginTop: 50,
   },
 });

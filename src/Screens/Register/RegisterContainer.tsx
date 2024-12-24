@@ -1,16 +1,13 @@
 import { Register } from "./Register";
-import React, { useState, useEffect } from "react";
-import { useLazyGetUserQuery } from "@/Services";
+import { RootScreens } from "..";
+import { RootStackParamList } from "@/Navigation";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-export const RegisterContainer = () => {
-  const [userId, setUserId] = useState("9");
-
-  const [fetchOne, { data, isSuccess, isLoading, isFetching, error }] =
-    useLazyGetUserQuery();
-
-  useEffect(() => {
-    fetchOne(userId);
-  }, [fetchOne, userId]);
-
-  return <Register data={data} isLoading={isLoading} />;
+export const RegisterContainer = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList>) => {
+  const onNavigate = (screen: RootScreens) => {
+    navigation.navigate(screen);
+  };
+  return <Register onNavigate={onNavigate} />;
 };

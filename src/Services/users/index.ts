@@ -28,6 +28,20 @@ export interface User {
   phone: string;
   username: string;
   website: string;
+  birthdate: string,
+  password: string,
+}
+
+export interface LoginRequest {
+  info_user: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  success: Boolean;
+  message: string;
+  access_token: string,
+  refresh_token: string,
 }
 
 const userApi = API.injectEndpoints({
@@ -35,8 +49,15 @@ const userApi = API.injectEndpoints({
     getUser: build.query<User, string>({
       query: (id) => `users/${id}`,
     }),
+    login: build.mutation<LoginResponse, LoginRequest>({
+      query: (credentials) => ({
+        url: "user/login",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useLazyGetUserQuery } = userApi;
+export const { useLazyGetUserQuery, useLoginMutation } = userApi;

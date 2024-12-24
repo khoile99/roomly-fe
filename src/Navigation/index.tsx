@@ -4,11 +4,15 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { MainNavigator } from "./Main";
 import { WelcomeContainer } from "@/Screens/Welcome";
+import { LoginContainer } from "@/Screens/Login";
+import { RegisterContainer } from "@/Screens/Register";
 import { RootScreens } from "@/Screens";
 
 export type RootStackParamList = {
   [RootScreens.MAIN]: undefined;
   [RootScreens.WELCOME]: undefined;
+  [RootScreens.REGISTER]: undefined;
+  [RootScreens.LOGIN]: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -22,6 +26,16 @@ const ApplicationNavigator = () => {
         <RootStack.Screen
           name={RootScreens.WELCOME}
           component={WelcomeContainer}
+        />
+        <RootStack.Screen
+          name={RootScreens.REGISTER}
+          component={RegisterContainer}
+          options={{ headerShown: true }}
+        />
+        <RootStack.Screen
+          name={RootScreens.LOGIN}
+          component={LoginContainer}
+          options={{ headerShown: true }}
         />
         <RootStack.Screen
           name={RootScreens.MAIN}
