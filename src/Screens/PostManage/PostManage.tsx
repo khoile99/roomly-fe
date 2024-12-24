@@ -5,6 +5,9 @@ import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
 import { Place } from "@/Services";
 import { PlaceCard } from "@/Components/PlaceCard";
+import { ProfileNavigator } from "@/Components/ProfileNavigator";
+import { ProfileScreens } from "..";
+import { useNavigation } from "@react-navigation/native";
 
 export interface IManagePostProps {
   places: Place[] | undefined;
@@ -13,6 +16,7 @@ export interface IManagePostProps {
 
 export const PostManage = (props: IManagePostProps) => {
   const { places, isLoading } = props;
+  const navigation = useNavigation();
   return (
     <ScrollView>
       <StatusBar style="auto" />
@@ -25,29 +29,33 @@ export const PostManage = (props: IManagePostProps) => {
         </HStack>
       ) : (
         <View style={styles.container}>
-          {
-            places?.map((place) => {
-              return <PlaceCard
+          {places?.map((place) => {
+            return (
+              <PlaceCard
                 place={place}
                 key={place.id}
-                pressDelete={() => { console.log(`delete ${place.id}`) }}
-                pressEdit={() => { console.log(`edit ${place.id}`) }}>
-              </PlaceCard>
-            })
-          }
+                pressDelete={() => {
+                  console.log(`delete ${place.id}`);
+                }}
+                pressEdit={() => {
+                  navigation.navigate("Edit Post", { id: place.id });
+                }}
+              ></PlaceCard>
+            );
+          })}
         </View>
-      )
-      }
-    </ScrollView >
+      )}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 10,
     flexWrap: "wrap",
     display: "flex",
     flexDirection: "row",
+    justifyContent: "space-between",
     gap: 20,
   },
 });

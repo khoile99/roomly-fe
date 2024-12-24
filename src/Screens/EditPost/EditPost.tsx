@@ -22,7 +22,7 @@ export interface IPostProps {
   isLoading: boolean;
 }
 
-export const Post = (props: IPostProps) => {
+export const EditPost = (props: IPostProps) => {
   const { data, isLoading } = props;
 
   const [step, setStep] = useState(1); // Quản lý bước hiện tại của form
