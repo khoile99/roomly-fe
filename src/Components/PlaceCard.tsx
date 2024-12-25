@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
   addressTxt: {
     color: "#848484",
     fontSize: 10,
+    width: 120,
   },
   price: {
     fontWeight: 600,

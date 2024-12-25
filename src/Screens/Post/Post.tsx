@@ -51,8 +51,8 @@ export const Post = (props: IPostProps) => {
       case 1:
         setIsStepValid(
           formData.title.trim() !== "" &&
-            formData.price.trim() !== "" &&
-            formData.deposit.trim() !== ""
+          formData.price.trim() !== "" &&
+          formData.deposit.trim() !== ""
         );
         break;
       case 2:
@@ -152,6 +152,8 @@ export const Post = (props: IPostProps) => {
                   <Picker.Item label="Chung cư" value="Chung cư" />
                   <Picker.Item label="Nhà trọ" value="Nhà trọ" />
                   <Picker.Item label="Nhà phố" value="Nhà phố" />
+                  <Picker.Item label="Nhà riêng" value="Nhà riêng" />
+                  <Picker.Item label="Căn hộ mini" value="Căn hộ mini" />
                 </Picker>
                 <Text style={styles.label}>Giá phòng</Text>
                 <TextInput
@@ -244,7 +246,7 @@ export const Post = (props: IPostProps) => {
                       style={[
                         styles.amenityText,
                         formData.amenities.includes(item) &&
-                          styles.activeAmenityText,
+                        styles.activeAmenityText,
                       ]}
                     >
                       {item}

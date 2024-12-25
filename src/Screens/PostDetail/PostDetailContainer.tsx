@@ -26,8 +26,8 @@ export const PostDetailContainer = () => {
     fetchData();
   }, [fetchPlaces]);
 
-  if (data?.data) {
-    for (var place of data?.data) {
+  if (data?.posts) {
+    for (var place of data?.posts) {
       if (place.id == id) {
         return <PostDetail data={place} isLoading={isLoading} />;
       }

@@ -43,4 +43,6 @@ export const vi = {
   [LocalizationKey.COME_BACK]: "Quay lại",
   [LocalizationKey.MONTH]: "Tháng",
   [LocalizationKey.DELETE]: "Xóa",
+  [LocalizationKey.UPDATE_FAIL]: "Cập nhật thất bại",
+  [LocalizationKey.UPDATE_SUCCESSFULL]: "Cập nhật thành công",
 };

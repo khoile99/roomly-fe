@@ -25,5 +25,5 @@ export const PostManageContainer = ({
     fetchData();
   }, [fetchPlaces]);
 
-  return <PostManage places={data?.data} isLoading={false} onNavigate={onNavigateProfileScreen} />;
+  return <PostManage places={data?.posts} isLoading={false} onNavigate={onNavigateProfileScreen} />;
 };

@@ -16,5 +16,5 @@ export const FavoriteContainer = () => {
     fetchData();
   }, [fetchPlaces]);
 
-  return <Favorite data={data?.data} isLoading={isLoading} />;
+  return <Favorite data={data?.posts} isLoading={isLoading} />;
 };

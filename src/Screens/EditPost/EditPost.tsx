@@ -6,14 +6,13 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
-import { Place } from "@/Services";
+import { Message, Place, useUpdatePlace1Mutation, useUpdatePlace2Mutation, useUpdatePlace3Mutation } from "@/Services";
+import SecureStore from "@/Store/SecureStore";
 
 export interface IPostProps {
   data: Place;
@@ -22,56 +21,89 @@ export interface IPostProps {
 
 export const EditPost = (props: IPostProps) => {
   const { data, isLoading } = props;
-
   const [step, setStep] = useState(1); // Quản lý bước hiện tại của form
-  const [isStepValid, setIsStepValid] = useState(false); // Trạng thái valid
-
   const [formData, setFormData] = useState(data);
 
-  const [contact, setContact] = useState({ name: "", phone: "" }); // Dữ liệu bước 3
+  const amenities = ["TV", "Máy lạnh", "Tủ lạnh", "Máy giặt", "Wifi"];
 
-  const amenities = ["Tivi", "Máy lạnh", "Tủ lạnh", "Máy giặt", "Wifi"];
+  const [updatePlace1, { isLoading: isLoadingStep1, isError, error }] = useUpdatePlace1Mutation();
+  const [updatePlace2, { isLoading: isLoadingStep2, isError: isError2, error: error2 }] = useUpdatePlace2Mutation();
+  const [updatePlace3, { isLoading: isLoadingStep3, isError: isError3, error: error3 }] = useUpdatePlace3Mutation();
 
-  // Kiểm tra điều kiện hợp lệ cho từng bước
-  useEffect(() => {
-    switch (step) {
-      case 1:
-        setIsStepValid(
-          formData.namePost.trim() !== "" &&
-          formData.price !== 0 &&
-          formData.deposit !== 0
-        );
-        break;
-      case 2:
-        setIsStepValid(
-          formData.address.trim() !== "" && amenities.length > 0
-        );
-        break;
-      case 3:
-        setIsStepValid(
-          contact.name.trim() !== "" && contact.phone.trim() !== ""
-        );
-        break;
-      default:
-        setIsStepValid(false);
-    }
-  }, [step, formData, amenities, contact]);
 
   const toggleAmenity = (item: string) => {
-    // if (amenities.includes(item)) {
-    //   setFormData({
-    //     ...formData,
-    //     amenities: formData.amenities.filter((amenity) => amenity !== item),
-    //   });
-    // } else {
-    //   setFormData({ ...formData, amenities: [...formData.amenities, item] });
-    // }
+    if (formData.comfort.split(";").includes(item)) {
+      setFormData({ ...formData, comfort: formData.comfort.replaceAll(`;${item}`, "").replaceAll(`${item};`, "") });
+    } else {
+      setFormData({ ...formData, comfort: `${formData.comfort};${item}` });
+    }
   };
 
   const handleSubmit = () => {
     console.log("Dữ liệu form:", { formData });
     alert("Bài đăng đã được gửi thành công!");
   };
+
+  const onNext = async (step: number) => {
+    const accessToken = await SecureStore.getAccessToken();
+    switch (step) {
+      case 2:
+        try {
+          const data = {
+            namePost: formData.namePost,
+            typeRoom: formData.typeRoom,
+            price: formData.price,
+            deposit: formData.deposit,
+            description: formData.description
+          }
+          const response = await updatePlace1({ accessToken: accessToken, id: formData.id, body: data }).unwrap();
+          alert(response.message);
+          setStep(step)
+        } catch (err) {
+          const error = err as Message;
+          if (error.message) {
+            alert(error.message);
+          } else {
+            alert(i18n.t(LocalizationKey.UPDATE_FAIL))
+          }
+        }
+        return;
+      case 3:
+        try {
+          const data = {
+            address: formData.address,
+            bedroom: formData.bedroom,
+            bathroom: formData.bathroom,
+            comfort: formData.comfort,
+          }
+          const response = await updatePlace2({ accessToken: accessToken, id: formData.id, body: data }).unwrap();
+          alert(response.message);
+          setStep(step)
+        } catch (err) {
+          const error = err as Message;
+          if (error.message) {
+            alert(error.message);
+          } else {
+            alert(i18n.t(LocalizationKey.UPDATE_FAIL))
+          }
+        }
+        return;
+      case 4:
+        try {
+          const response = await updatePlace3({ accessToken: accessToken, id: formData.id }).unwrap();
+          alert(response.message);
+          setStep(step)
+        } catch (err) {
+          const error = err as Message;
+          if (error.message) {
+            alert(error.message);
+          } else {
+            alert(i18n.t(LocalizationKey.UPDATE_FAIL))
+          }
+        }
+        return;
+    }
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -87,7 +119,7 @@ export const EditPost = (props: IPostProps) => {
         <ScrollView>
           {/* Header */}
           <View style={styles.header}>
-            <Text style={styles.headerText}>Thêm bài đăng</Text>
+            <Text style={styles.headerText}>Sửa bài đăng</Text>
           </View>
 
           {/* Stepper */}
@@ -114,68 +146,65 @@ export const EditPost = (props: IPostProps) => {
 
           {/* Nội dung form */}
           {step === 1 && (
-            <KeyboardAvoidingView
-              style={{ flex: 1 }}
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-              <ScrollView style={styles.form}>
-                <Text style={styles.label}>Tiêu đề bài đăng</Text>
-                <TextInput
-                  value={formData.namePost}
-                  style={styles.input}
-                  placeholder="Phòng thường - Lầu 1 - Máy lạnh"
-                  onChangeText={(text) =>
-                    setFormData({ ...formData, namePost: text })
-                  }
-                />
-                <Text style={styles.label}>Loại phòng</Text>
-                <Picker
-                  selectedValue={formData.typeRoom}
-                  style={styles.input}
-                  onValueChange={(itemValue) =>
-                    setFormData({ ...formData, typeRoom: itemValue })
-                  }
-                >
-                  <Picker.Item label="Chung cư" value="Chung cư" />
-                  <Picker.Item label="Nhà trọ" value="Nhà trọ" />
-                  <Picker.Item label="Nhà phố" value="Nhà phố" />
-                </Picker>
-                <Text style={styles.label}>Giá phòng</Text>
-                <TextInput
-                  value={formData.price.toString()}
-                  style={styles.input}
-                  placeholder="1000000"
-                  keyboardType="numeric"
-                  onChangeText={(text) =>
-                    setFormData({ ...formData, price: Number(text) })
-                  }
-                />
-                <Text style={styles.label}>Tiền cọc</Text>
-                <TextInput
-                  value={formData.deposit.toString()}
-                  style={styles.input}
-                  placeholder="500000"
-                  keyboardType="numeric"
-                  onChangeText={(text) =>
-                    setFormData({ ...formData, deposit: Number(text) })
-                  }
-                />
+            <ScrollView style={styles.form}>
+              <Text style={styles.label}>Tiêu đề bài đăng</Text>
+              <TextInput
+                value={formData.namePost}
+                style={styles.input}
+                placeholder="Phòng thường - Lầu 1 - Máy lạnh"
+                onChangeText={(text) =>
+                  setFormData({ ...formData, namePost: text })
+                }
+              />
+              <Text style={styles.label}>Loại phòng</Text>
+              <Picker
+                selectedValue={formData.typeRoom}
+                style={styles.input}
+                onValueChange={(itemValue) =>
+                  setFormData({ ...formData, typeRoom: itemValue })
+                }
+              >
+                <Picker.Item label="Chung cư" value="Chung cư" />
+                <Picker.Item label="Nhà trọ" value="Nhà trọ" />
+                <Picker.Item label="Nhà phố" value="Nhà phố" />
+                <Picker.Item label="Nhà riêng" value="Nhà riêng" />
+                <Picker.Item label="Căn hộ mini" value="Căn hộ mini" />
+              </Picker>
+              <Text style={styles.label}>Giá phòng</Text>
+              <TextInput
+                value={formData.price.toString()}
+                style={styles.input}
+                placeholder="1000000"
+                keyboardType="numeric"
+                onChangeText={(text) =>
+                  setFormData({ ...formData, price: Number(text) })
+                }
+              />
+              <Text style={styles.label}>Tiền cọc</Text>
+              <TextInput
+                value={formData.deposit.toString()}
+                style={styles.input}
+                placeholder="500000"
+                keyboardType="numeric"
+                onChangeText={(text) =>
+                  setFormData({ ...formData, deposit: Number(text) })
+                }
+              />
 
-                {/* Trường mô tả */}
-                <Text style={styles.label}>Mô tả</Text>
-                <TextInput
-                  value={formData.description}
-                  style={[styles.input, styles.textArea]}
-                  placeholder="Nhập mô tả về phòng..."
-                  multiline
-                  numberOfLines={3} // Hiển thị tối đa 3 dòng
-                  textAlignVertical="top" // Nội dung canh từ trên cùng
-                  onChangeText={(text) =>
-                    setFormData({ ...formData, description: text })
-                  }
-                />
-              </ScrollView>
-            </KeyboardAvoidingView>
+              {/* Trường mô tả */}
+              <Text style={styles.label}>Mô tả</Text>
+              <TextInput
+                value={formData.description}
+                style={[styles.input, styles.textArea]}
+                placeholder="Nhập mô tả về phòng..."
+                multiline
+                numberOfLines={3} // Hiển thị tối đa 3 dòng
+                textAlignVertical="top" // Nội dung canh từ trên cùng
+                onChangeText={(text) =>
+                  setFormData({ ...formData, description: text })
+                }
+              />
+            </ScrollView>
           )}
 
           {step === 2 && (
@@ -223,14 +252,14 @@ export const EditPost = (props: IPostProps) => {
                     key={item}
                     style={[
                       styles.amenityButton,
-                      [formData.comfort].includes(item) && styles.activeAmenity,
+                      formData.comfort.split(";").includes(item) && styles.activeAmenity,
                     ]}
                     onPress={() => toggleAmenity(item)}
                   >
                     <Text
                       style={[
                         styles.amenityText,
-                        [formData.comfort].includes(item) &&
+                        formData.comfort.split(";").includes(item) &&
                         styles.activeAmenityText,
                       ]}
                     >
@@ -248,11 +277,11 @@ export const EditPost = (props: IPostProps) => {
               <TextInput
                 style={styles.input}
                 placeholder="Nhập tên của bạn"
-                value={formData.userId}
+                value={formData.userName}
                 onChangeText={(text) =>
                   setFormData({
                     ...formData,
-                    userId: text,
+                    userName: text,
                   })
                 }
               />
@@ -261,24 +290,11 @@ export const EditPost = (props: IPostProps) => {
                 style={styles.input}
                 placeholder="Nhập số điện thoại"
                 keyboardType="numeric"
-                value={formData.userId}
+                value={formData.userPhone}
                 onChangeText={(text) =>
                   setFormData({
                     ...formData,
-                    userId: text,
-                  })
-                }
-              />
-              <Text style={styles.label}>Ghi chú thêm (nếu có)</Text>
-              <TextInput
-                style={[styles.input, styles.textArea]}
-                placeholder="Nhập ghi chú thêm"
-                value={formData.description}
-                multiline
-                onChangeText={(text) =>
-                  setFormData({
-                    ...formData,
-                    description: text,
+                    userPhone: text,
                   })
                 }
               />
@@ -298,19 +314,15 @@ export const EditPost = (props: IPostProps) => {
             {step < 3 ? (
               <TouchableOpacity
                 // style={styles.nextButton}
-                style={[
-                  styles.nextButton,
-                  { opacity: isStepValid ? 1 : 0.5 }, // Thay đổi độ mờ của nút
-                ]}
-                onPress={() => setStep(step + 1)}
-                disabled={!isStepValid} // Disable nếu không hợp lệ
+                style={styles.nextButton}
+                onPress={() => onNext(step + 1)}
               >
                 <Text style={styles.buttonText}>Tiếp theo</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 style={styles.nextButton}
-                onPress={handleSubmit}
+                onPress={() => onNext(4)}
               >
                 <Text style={styles.buttonText}>Hoàn thành</Text>
               </TouchableOpacity>
