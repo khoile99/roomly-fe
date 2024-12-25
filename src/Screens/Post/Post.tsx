@@ -7,332 +7,288 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
-import { User } from "@/Services";
+import SecureStore from "@/Store/SecureStore";
+import { Message, useCreatePlace1Mutation, useCreatePlace2Mutation, useCreatePlace3Mutation } from "@/Services";
 
-export interface IPostProps {
-  data: User | undefined;
-  isLoading: boolean;
-}
 
-export const Post = (props: IPostProps) => {
-  const { data, isLoading } = props;
-
+export const Post = () => {
   const [step, setStep] = useState(1); // Quản lý bước hiện tại của form
-  const [isStepValid, setIsStepValid] = useState(false); // Trạng thái valid
+  const [createPlace1, { isLoading: isLoadingStep1, isError, error }] = useCreatePlace1Mutation();
+  const [createPlace2, { isLoading: isLoadingStep2, isError: isError2, error: error2 }] = useCreatePlace2Mutation();
+  const [createPlace3, { isLoading: isLoadingStep3, isError: isError3, error: error3 }] = useCreatePlace3Mutation();
 
   const [formData, setFormData] = useState({
-    title: "",
-    price: "",
-    deposit: "",
+    namePost: "",
+    typeRoom: "",
+    price: 0,
+    deposit: 0,
     description: "",
     address: "",
-    roomType: "Chung cư",
-    bathRoomNumber: 1,
-    bedRoomNumber: 1,
-    contact: { name: "", phone: "", note: "" },
-    amenities: [],
+    bedroom: 0,
+    bathroom: 0,
+    comfort: "",
   });
+  const amenities = ["TV", "Máy lạnh", "Tủ lạnh", "Máy giặt", "Wifi"];
 
-  const [contact, setContact] = useState({ name: "", phone: "" }); // Dữ liệu bước 3
-
-  const amenities = ["Tivi", "Máy lạnh", "Tủ lạnh", "Máy giặt", "Wifi"];
-
-  // Kiểm tra điều kiện hợp lệ cho từng bước
-  useEffect(() => {
-    switch (step) {
-      case 1:
-        setIsStepValid(
-          formData.title.trim() !== "" &&
-          formData.price.trim() !== "" &&
-          formData.deposit.trim() !== ""
-        );
-        break;
-      case 2:
-        setIsStepValid(
-          formData.address.trim() !== "" && formData.amenities.length > 0
-        );
-        break;
-      case 3:
-        setIsStepValid(
-          contact.name.trim() !== "" && contact.phone.trim() !== ""
-        );
-        break;
-      default:
-        setIsStepValid(false);
-    }
-  }, [step, formData, formData.amenities, contact]);
-
-  const toggleAmenity = (item) => {
-    if (formData.amenities.includes(item)) {
-      setFormData({
-        ...formData,
-        amenities: formData.amenities.filter((amenity) => amenity !== item),
-      });
+  const toggleAmenity = (item: string) => {
+    if (formData.comfort.split(";").includes(item)) {
+      setFormData({ ...formData, comfort: formData.comfort.replaceAll(`;${item}`, "").replaceAll(`${item};`, "") });
     } else {
-      setFormData({ ...formData, amenities: [...formData.amenities, item] });
+      setFormData({ ...formData, comfort: `${formData.comfort};${item}` });
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Dữ liệu form:", { formData });
-    alert("Bài đăng đã được gửi thành công!");
-  };
+  const onNext = async (step: number) => {
+    const accessToken = await SecureStore.getAccessToken();
+    switch (step) {
+      case 2:
+        try {
+          const data = {
+            namePost: formData.namePost,
+            typeRoom: formData.typeRoom,
+            price: formData.price,
+            deposit: formData.deposit,
+            description: formData.description
+          }
+          const response = await createPlace1({ accessToken: accessToken, body: data }).unwrap();
+          alert(response.message);
+          setStep(step)
+        } catch (err) {
+          const error = err as Message;
+          if (error.message) {
+            alert(error.message);
+          } else {
+            alert(i18n.t(LocalizationKey.CREATE_FAIL))
+          }
+        }
+        return;
+      case 3:
+        try {
+          const data = {
+            address: formData.address,
+            bedroom: formData.bedroom,
+            bathroom: formData.bathroom,
+            comfort: formData.comfort,
+          }
+          const response = await createPlace2({ accessToken: accessToken, body: data }).unwrap();
+          alert(response.message);
+          setStep(step)
+        } catch (err) {
+          const error = err as Message;
+          if (error.message) {
+            alert(error.message);
+          } else {
+            alert(i18n.t(LocalizationKey.CREATE_FAIL))
+          }
+        }
+        return;
+      case 4:
+        try {
+          const response = await createPlace3({ accessToken: accessToken }).unwrap();
+          alert(response.message);
+          setStep(step)
+        } catch (err) {
+          const error = err as Message;
+          if (error.message) {
+            alert(error.message);
+          } else {
+            alert(i18n.t(LocalizationKey.CREATE_FAIL))
+          }
+        }
+        return;
+    }
+  }
 
   return (
     <ScrollView style={styles.container}>
-      <StatusBar style="auto" />
-      {isLoading ? (
-        <HStack space={2} justifyContent="center">
-          <Spinner accessibilityLabel="Loading posts" />
-          <Heading color="primary.500" fontSize="md">
-            {i18n.t(LocalizationKey.LOADING)}
-          </Heading>
-        </HStack>
-      ) : (
-        <ScrollView>
-          {/* Header */}
-          <View style={styles.header}>
-            <Text style={styles.headerText}>Thêm bài đăng</Text>
-          </View>
+      <ScrollView>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Thêm bài đăng</Text>
+        </View>
 
-          {/* Stepper */}
-          <View style={styles.stepper}>
-            {[1, 2, 3].map((item, index) => (
-              <React.Fragment key={item}>
-                {/* Hiển thị step */}
-                <View style={[styles.step, step >= item && styles.activeStep]}>
-                  <Text style={styles.stepText}>{item}</Text>
-                </View>
+        {/* Stepper */}
+        <View style={styles.stepper}>
+          {[1, 2, 3].map((item, index) => (
+            <React.Fragment key={item}>
+              {/* Hiển thị step */}
+              <View style={[styles.step, step >= item && styles.activeStep]}>
+                <Text style={styles.stepText}>{item}</Text>
+              </View>
 
-                {/* Vẽ line nếu không phải step cuối */}
-                {index < 3 && (
-                  <View
-                    style={[
-                      styles.line,
-                      step > item && styles.activeLine, // Line active khi vượt qua step
-                    ]}
-                  />
-                )}
-              </React.Fragment>
-            ))}
-          </View>
+              {/* Vẽ line nếu không phải step cuối */}
+              {index < 3 && (
+                <View
+                  style={[
+                    styles.line,
+                    step > item && styles.activeLine, // Line active khi vượt qua step
+                  ]}
+                />
+              )}
+            </React.Fragment>
+          ))}
+        </View>
 
-          {/* Nội dung form */}
-          {step === 1 && (
-            <KeyboardAvoidingView
-              style={{ flex: 1 }}
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
+        {/* Nội dung form */}
+        {step === 1 &&
+          <ScrollView style={styles.form}>
+            <Text style={styles.label}>Tiêu đề bài đăng</Text>
+            <TextInput
+              value={formData.namePost}
+              style={styles.input}
+              placeholder="Phòng thường - Lầu 1 - Máy lạnh"
+              onChangeText={(text) =>
+                setFormData({ ...formData, namePost: text })
+              }
+            />
+            <Text style={styles.label}>Loại phòng</Text>
+            <Picker
+              selectedValue={formData.typeRoom}
+              style={styles.input}
+              onValueChange={(itemValue) =>
+                setFormData({ ...formData, typeRoom: itemValue })
+              }
             >
-              <ScrollView style={styles.form}>
-                <Text style={styles.label}>Tiêu đề bài đăng</Text>
-                <TextInput
-                  value={formData.title}
-                  style={styles.input}
-                  placeholder="Phòng thường - Lầu 1 - Máy lạnh"
-                  onChangeText={(text) =>
-                    setFormData({ ...formData, title: text })
-                  }
-                />
-                <Text style={styles.label}>Loại phòng</Text>
-                <Picker
-                  selectedValue={formData.roomType}
-                  style={styles.input}
-                  onValueChange={(itemValue) =>
-                    setFormData({ ...formData, roomType: itemValue })
-                  }
-                >
-                  <Picker.Item label="Chung cư" value="Chung cư" />
-                  <Picker.Item label="Nhà trọ" value="Nhà trọ" />
-                  <Picker.Item label="Nhà phố" value="Nhà phố" />
-                  <Picker.Item label="Nhà riêng" value="Nhà riêng" />
-                  <Picker.Item label="Căn hộ mini" value="Căn hộ mini" />
-                </Picker>
-                <Text style={styles.label}>Giá phòng</Text>
-                <TextInput
-                  value={formData.price}
-                  style={styles.input}
-                  placeholder="1000000"
-                  keyboardType="numeric"
-                  onChangeText={(text) =>
-                    setFormData({ ...formData, price: text })
-                  }
-                />
-                <Text style={styles.label}>Tiền cọc</Text>
-                <TextInput
-                  value={formData.deposit}
-                  style={styles.input}
-                  placeholder="500000"
-                  keyboardType="numeric"
-                  onChangeText={(text) =>
-                    setFormData({ ...formData, deposit: text })
-                  }
-                />
+              <Picker.Item label="Chung cư" value="Chung cư" />
+              <Picker.Item label="Nhà trọ" value="Nhà trọ" />
+              <Picker.Item label="Nhà phố" value="Nhà phố" />
+              <Picker.Item label="Nhà riêng" value="Nhà riêng" />
+              <Picker.Item label="Căn hộ mini" value="Căn hộ mini" />
+            </Picker>
+            <Text style={styles.label}>Giá phòng</Text>
+            <TextInput
+              value={formData.price.toString()}
+              style={styles.input}
+              placeholder="1000000"
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                setFormData({ ...formData, price: Number(text) })
+              }
+            />
+            <Text style={styles.label}>Tiền cọc</Text>
+            <TextInput
+              value={formData.deposit.toString()}
+              style={styles.input}
+              placeholder="500000"
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                setFormData({ ...formData, deposit: Number(text) })
+              }
+            />
 
-                {/* Trường mô tả */}
-                <Text style={styles.label}>Mô tả</Text>
-                <TextInput
-                  value={formData.description}
-                  style={[styles.input, styles.textarea]}
-                  placeholder="Nhập mô tả về phòng..."
-                  multiline
-                  numberOfLines={3} // Hiển thị tối đa 3 dòng
-                  textAlignVertical="top" // Nội dung canh từ trên cùng
-                  onChangeText={(text) =>
-                    setFormData({ ...formData, description: text })
-                  }
-                />
-              </ScrollView>
-            </KeyboardAvoidingView>
-          )}
+            {/* Trường mô tả */}
+            <Text style={styles.label}>Mô tả</Text>
+            <TextInput
+              value={formData.description}
+              style={[styles.input, styles.textArea]}
+              placeholder="Nhập mô tả về phòng..."
+              multiline
+              numberOfLines={3} // Hiển thị tối đa 3 dòng
+              textAlignVertical="top" // Nội dung canh từ trên cùng
+              onChangeText={(text) =>
+                setFormData({ ...formData, description: text })
+              }
+            />
+          </ScrollView>
+        }
 
-          {step === 2 && (
-            <ScrollView style={styles.form}>
-              <Text style={styles.label}>Địa chỉ</Text>
-              <TextInput
-                value={formData.address}
-                style={styles.input}
-                placeholder="Nhập địa chỉ"
-                onChangeText={(text) =>
-                  setFormData({ ...formData, address: text })
-                }
-              />
-              <View style={styles.mapPlaceholder}>
-                <Text>Bản đồ sẽ hiển thị tại đây</Text>
-              </View>
-              <Text style={styles.label}>Phòng ngủ</Text>
-              <Picker
-                selectedValue={formData.bedRoomNumber}
-                style={styles.input}
-                onValueChange={(itemValue) =>
-                  setFormData({ ...formData, bedRoomNumber: itemValue })
-                }
-              >
-                <Picker.Item label="1" value="1" />
-                <Picker.Item label="2" value="2" />
-                <Picker.Item label="3" value="3" />
-              </Picker>
-              <Text style={styles.label}>Phòng tắm</Text>
-              <Picker
-                selectedValue={formData.bathRoomNumber}
-                style={styles.input}
-                onValueChange={(itemValue) =>
-                  setFormData({ ...formData, bathRoomNumber: itemValue })
-                }
-              >
-                <Picker.Item label="1" value="1" />
-                <Picker.Item label="2" value="2" />
-                <Picker.Item label="3" value="3" />
-              </Picker>
-              <Text style={styles.label}>Tiện nghi</Text>
-              <View style={styles.amenitiesContainer}>
-                {amenities.map((item) => (
-                  <TouchableOpacity
-                    key={item}
-                    style={[
-                      styles.amenityButton,
-                      formData.amenities.includes(item) && styles.activeAmenity,
-                    ]}
-                    onPress={() => toggleAmenity(item)}
-                  >
-                    <Text
-                      style={[
-                        styles.amenityText,
-                        formData.amenities.includes(item) &&
-                        styles.activeAmenityText,
-                      ]}
-                    >
-                      {item}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </ScrollView>
-          )}
-
-          {step === 3 && (
-            <View style={styles.form}>
-              <Text style={styles.label}>Tên liên hệ</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Nhập tên của bạn"
-                value={formData.contact.name}
-                onChangeText={(text) =>
-                  setFormData({
-                    ...formData,
-                    contact: { ...formData.contact, name: text },
-                  })
-                }
-              />
-              <Text style={styles.label}>Số điện thoại</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Nhập số điện thoại"
-                keyboardType="numeric"
-                value={formData.contact.phone}
-                onChangeText={(text) =>
-                  setFormData({
-                    ...formData,
-                    contact: { ...formData.contact, phone: text },
-                  })
-                }
-              />
-              <Text style={styles.label}>Ghi chú thêm (nếu có)</Text>
-              <TextInput
-                style={[styles.input, styles.textArea]}
-                placeholder="Nhập ghi chú thêm"
-                value={formData.contact.note}
-                multiline
-                onChangeText={(text) =>
-                  setFormData({
-                    ...formData,
-                    contact: { ...formData.contact, note: text },
-                  })
-                }
-              />
+        {step === 2 && (
+          <ScrollView style={styles.form}>
+            <Text style={styles.label}>Địa chỉ</Text>
+            <TextInput
+              value={formData.address}
+              style={styles.input}
+              placeholder="Nhập địa chỉ"
+              onChangeText={(text) =>
+                setFormData({ ...formData, address: text })
+              }
+            />
+            <View style={styles.mapPlaceholder}>
+              <Text>Bản đồ sẽ hiển thị tại đây</Text>
             </View>
-          )}
+            <Text style={styles.label}>Phòng ngủ</Text>
+            <Picker
+              selectedValue={formData.bedroom}
+              style={styles.input}
+              onValueChange={(itemValue) =>
+                setFormData({ ...formData, bedroom: itemValue })
+              }
+            >
+              <Picker.Item label="1" value="1" />
+              <Picker.Item label="2" value="2" />
+              <Picker.Item label="3" value="3" />
+            </Picker>
+            <Text style={styles.label}>Phòng tắm</Text>
+            <Picker
+              selectedValue={formData.bathroom}
+              style={styles.input}
+              onValueChange={(itemValue) =>
+                setFormData({ ...formData, bathroom: itemValue })
+              }
+            >
+              <Picker.Item label="1" value="1" />
+              <Picker.Item label="2" value="2" />
+              <Picker.Item label="3" value="3" />
+            </Picker>
+            <Text style={styles.label}>Tiện nghi</Text>
+            <View style={styles.amenitiesContainer}>
+              {amenities.map((item) => (
+                <TouchableOpacity
+                  key={item}
+                  style={[
+                    styles.amenityButton,
+                    formData.comfort.split(";").includes(item) && styles.activeAmenity,
+                  ]}
+                  onPress={() => toggleAmenity(item)}
+                >
+                  <Text
+                    style={[
+                      styles.amenityText,
+                      formData.comfort.split(";").includes(item) &&
+                      styles.activeAmenityText,
+                    ]}
+                  >
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
+        )}
 
-          {/* Nút điều hướng */}
-          <View style={styles.buttonContainer}>
-            {step > 1 && (
-              <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => setStep(step - 1)}
-              >
-                <Text style={styles.buttonText}>Quay lại</Text>
-              </TouchableOpacity>
-            )}
-            {step < 3 ? (
-              <TouchableOpacity
-                // style={styles.nextButton}
-                style={[
-                  styles.nextButton,
-                  { opacity: isStepValid ? 1 : 0.5 }, // Thay đổi độ mờ của nút
-                ]}
-                onPress={() => setStep(step + 1)}
-                disabled={!isStepValid} // Disable nếu không hợp lệ
-              >
-                <Text style={styles.buttonText}>Tiếp theo</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={styles.nextButton}
-                onPress={handleSubmit}
-              >
-                <Text style={styles.buttonText}>Hoàn thành</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        </ScrollView>
-      )}
+        {/* Nút điều hướng */}
+        <View style={styles.buttonContainer}>
+          {step > 1 && (
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => setStep(step - 1)}
+            >
+              <Text style={styles.buttonText}>Quay lại</Text>
+            </TouchableOpacity>
+          )}
+          {step < 3 ? (
+            <TouchableOpacity
+              // style={styles.nextButton}
+              style={styles.nextButton}
+              onPress={() => onNext(step + 1)}
+            >
+              <Text style={styles.buttonText}>Tiếp theo</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.nextButton}
+              onPress={() => onNext(4)}
+            >
+              <Text style={styles.buttonText}>Hoàn thành</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </ScrollView>
     </ScrollView>
   );
 };

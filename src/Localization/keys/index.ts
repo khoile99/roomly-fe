@@ -37,6 +37,7 @@ export enum LocalizationKey {
   ENTER_NEW_PASSWORD_AGAIN = "enter new password again",
   CHANGE_PASSWORD_FAIL = "change password fail",
   UPDATE_FAIL = "update fail",
+  CREATE_FAIL = "create fail",
   UPDATE_SUCCESSFULL = "update successfull",
   CONFIRM_LOGOUT = "confirm logout",
   YES = "yes",

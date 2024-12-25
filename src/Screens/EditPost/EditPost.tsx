@@ -313,7 +313,6 @@ export const EditPost = (props: IPostProps) => {
             )}
             {step < 3 ? (
               <TouchableOpacity
-                // style={styles.nextButton}
                 style={styles.nextButton}
                 onPress={() => onNext(step + 1)}
               >

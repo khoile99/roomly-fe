@@ -44,5 +44,6 @@ export const en = {
   [LocalizationKey.MONTH]: "Month",
   [LocalizationKey.DELETE]: "Delete",
   [LocalizationKey.UPDATE_FAIL]: "Update Fail",
+  [LocalizationKey.CREATE_FAIL]: "Create Fail",
   [LocalizationKey.UPDATE_SUCCESSFULL]: "Update Successfull",
 };

@@ -100,8 +100,38 @@ const placeAPI = API.injectEndpoints({
         }
       }),
     }),
+    createPlace1: build.mutation<UpdatePlace1Response, { accessToken: string, body: UpdatePlace1 }>({
+      query: ({ accessToken, body }) => ({
+        url: `post/create/step1`,
+        method: "POST",
+        body: body,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        }
+      }),
+    }),
+    createPlace2: build.mutation<UpdatePlace2Response, { accessToken: string, body: UpdatePlace2 }>({
+      query: ({ accessToken, body }) => ({
+        url: `post/create/step2`,
+        method: "POST",
+        body: body,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        }
+      }),
+    }),
+    createPlace3: build.mutation<UpdatePlace3Response, { accessToken: string }>({
+      query: ({ accessToken }) => ({
+        url: `post/create/step3`,
+        method: "POST",
+        body: {},
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        }
+      }),
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useGetPlacesMutation, useUpdatePlace1Mutation, useUpdatePlace2Mutation, useUpdatePlace3Mutation } = placeAPI;
+export const { useGetPlacesMutation, useUpdatePlace1Mutation, useUpdatePlace2Mutation, useUpdatePlace3Mutation, useCreatePlace1Mutation, useCreatePlace2Mutation, useCreatePlace3Mutation } = placeAPI;

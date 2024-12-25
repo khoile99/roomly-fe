@@ -44,5 +44,6 @@ export const vi = {
   [LocalizationKey.MONTH]: "Tháng",
   [LocalizationKey.DELETE]: "Xóa",
   [LocalizationKey.UPDATE_FAIL]: "Cập nhật thất bại",
+  [LocalizationKey.CREATE_FAIL]: "Khởi tạo thất bại",
   [LocalizationKey.UPDATE_SUCCESSFULL]: "Cập nhật thành công",
 };
