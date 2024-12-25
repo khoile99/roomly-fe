@@ -27,6 +27,7 @@ export type ProfileStackParamList = {
   [ProfileScreens.CHANGE_PASSWORD]: undefined;
   [ProfileScreens.LOGOUT]: undefined;
   [ProfileScreens.EDIT_POST]: undefined;
+  [ProfileScreens.POST_DETAIL]: undefined;
 };
 const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
 
