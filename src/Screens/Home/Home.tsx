@@ -13,10 +13,14 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
 import { Place } from "@/Services";
+import { ProfileScreens } from "..";
+
 
 export interface IHomeProps {
   data: Place[] | undefined;
   isLoading: boolean;
+  onNavigate: (string: ProfileScreens, props: any) => void;
+
 }
 
 export const Home = (props: IHomeProps) => {
@@ -41,7 +45,6 @@ export const Home = (props: IHomeProps) => {
 
   useEffect(() => {
     if (data && data.length > 0) {
-      // Set initial places based on the first place type
       const initialPlaces = data.filter((place) => place.typeRoom === placeTypes[0]);
       setPlaces(initialPlaces);
       setTopPlaces([data[0], data[1], data[2]])
@@ -60,13 +63,11 @@ export const Home = (props: IHomeProps) => {
         </HStack>
       ) : (
         <ScrollView>
-          {/* Header */}
           <View style={styles.header}>
             <Text style={styles.logo}>Roomly</Text>
             <Icon name="bell" size={20} color="#000" />
           </View>
 
-          {/* Search Bar */}
           <View style={styles.searchContainer}>
             <Icon name="search" size={16} color="#ccc" />
             <TextInput
@@ -76,7 +77,6 @@ export const Home = (props: IHomeProps) => {
             <Icon name="sliders-h" size={16} color="#5db0ff" />
           </View>
 
-          {/* Filter Tabs */}
           <View style={styles.filterTabs}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {placeTypes.map((item, index) => (
@@ -98,7 +98,6 @@ export const Home = (props: IHomeProps) => {
             </ScrollView>
           </View>
 
-          {/* Nearby Section */}
           <View style={styles.section}>
             <ScrollView
               horizontal
@@ -106,36 +105,38 @@ export const Home = (props: IHomeProps) => {
               style={styles.horizontalScroll}
             >
               {places.map((place, index) => (
-                <View key={index} style={styles.card}>
-                  <Image
-                    src={place.image}
-                    style={styles.cardImage}
-                  />
-                  <Text style={styles.cardDistance}>{place.size}m2</Text>
-                  <Text style={styles.cardName}>{place.namePost}</Text>
-                  <Text style={styles.cardLocation}>{place.address}</Text>
-                </View>
+                <TouchableOpacity key={place.id} onPress={() => props.onNavigate(ProfileScreens.POST_DETAIL, { id: place.id })}>
+                  <View style={styles.card}>
+                    <Image
+                      src={place.image}
+                      style={styles.cardImage}
+                    />
+                    <Text style={styles.cardDistance}>{place.size}m2</Text>
+                    <Text style={styles.cardName}>{place.namePost}</Text>
+                    <Text style={styles.cardLocation}>{place.address}</Text>
+                  </View>
+                </TouchableOpacity>
               )
               )}
             </ScrollView>
           </View>
 
-          {/* Best Choices Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Những lựa chọn tốt nhất</Text>
-            {/* Chỗ này cần data các bài đăng best theo tiêu chí nào thì chưa biết */}
             {topPlaces?.map((place, index) => (
-              <View key={index} style={styles.listItem}>
-                <Image
-                  src={place.image}
-                  style={styles.listImage}
-                />
-                <View>
-                  <Text style={styles.listName}>{place.namePost}</Text>
-                  <Text style={styles.listPrice}>${place.price} / tháng</Text>
-                  <Text style={styles.listDetails}>{place.bedroom} phòng ngủ</Text>
+              <TouchableOpacity key={place.id} onPress={() => props.onNavigate(ProfileScreens.POST_DETAIL, { id: place.id })}>
+                <View style={styles.listItem}>
+                  <Image
+                    src={place.image}
+                    style={styles.listImage}
+                  />
+                  <View>
+                    <Text style={styles.listName}>{place.namePost}</Text>
+                    <Text style={styles.listPrice}>${place.price} / tháng</Text>
+                    <Text style={styles.listDetails}>{place.bedroom} phòng ngủ</Text>
+                  </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
         </ScrollView>
