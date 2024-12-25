@@ -17,6 +17,7 @@ export enum ProfileScreens {
   PROFILE = "Profile",
   PROFILE_INFORMATION = "Profile Information",
   POST_MANAGE = "Post Manage",
+  EDIT_POST = "Edit Post",
   CHANGE_PASSWORD = "Change Password",
   LOGOUT = "Logout",
 }

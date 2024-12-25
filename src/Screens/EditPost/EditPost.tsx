@@ -1,13 +1,11 @@
 import { i18n, LocalizationKey } from "@/Localization";
 import React, { useState, useEffect } from "react";
-// import { View, Text, StyleSheet } from "react-native";
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -15,10 +13,10 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
-import { User } from "@/Services";
+import { Place } from "@/Services";
 
 export interface IPostProps {
-  data: User | undefined;
+  data: Place;
   isLoading: boolean;
 }
 
@@ -28,18 +26,7 @@ export const EditPost = (props: IPostProps) => {
   const [step, setStep] = useState(1); // Quản lý bước hiện tại của form
   const [isStepValid, setIsStepValid] = useState(false); // Trạng thái valid
 
-  const [formData, setFormData] = useState({
-    title: "",
-    price: "",
-    deposit: "",
-    description: "",
-    address: "",
-    roomType: "Chung cư",
-    bathRoomNumber: 1,
-    bedRoomNumber: 1,
-    contact: { name: "", phone: "", note: "" },
-    amenities: [],
-  });
+  const [formData, setFormData] = useState(data);
 
   const [contact, setContact] = useState({ name: "", phone: "" }); // Dữ liệu bước 3
 
@@ -50,14 +37,14 @@ export const EditPost = (props: IPostProps) => {
     switch (step) {
       case 1:
         setIsStepValid(
-          formData.title.trim() !== "" &&
-            formData.price.trim() !== "" &&
-            formData.deposit.trim() !== ""
+          formData.namePost.trim() !== "" &&
+          formData.price !== 0 &&
+          formData.deposit !== 0
         );
         break;
       case 2:
         setIsStepValid(
-          formData.address.trim() !== "" && formData.amenities.length > 0
+          formData.address.trim() !== "" && amenities.length > 0
         );
         break;
       case 3:
@@ -68,17 +55,17 @@ export const EditPost = (props: IPostProps) => {
       default:
         setIsStepValid(false);
     }
-  }, [step, formData, formData.amenities, contact]);
+  }, [step, formData, amenities, contact]);
 
-  const toggleAmenity = (item) => {
-    if (formData.amenities.includes(item)) {
-      setFormData({
-        ...formData,
-        amenities: formData.amenities.filter((amenity) => amenity !== item),
-      });
-    } else {
-      setFormData({ ...formData, amenities: [...formData.amenities, item] });
-    }
+  const toggleAmenity = (item: string) => {
+    // if (amenities.includes(item)) {
+    //   setFormData({
+    //     ...formData,
+    //     amenities: formData.amenities.filter((amenity) => amenity !== item),
+    //   });
+    // } else {
+    //   setFormData({ ...formData, amenities: [...formData.amenities, item] });
+    // }
   };
 
   const handleSubmit = () => {
@@ -134,19 +121,19 @@ export const EditPost = (props: IPostProps) => {
               <ScrollView style={styles.form}>
                 <Text style={styles.label}>Tiêu đề bài đăng</Text>
                 <TextInput
-                  value={formData.title}
+                  value={formData.namePost}
                   style={styles.input}
                   placeholder="Phòng thường - Lầu 1 - Máy lạnh"
                   onChangeText={(text) =>
-                    setFormData({ ...formData, title: text })
+                    setFormData({ ...formData, namePost: text })
                   }
                 />
                 <Text style={styles.label}>Loại phòng</Text>
                 <Picker
-                  selectedValue={formData.roomType}
+                  selectedValue={formData.typeRoom}
                   style={styles.input}
                   onValueChange={(itemValue) =>
-                    setFormData({ ...formData, roomType: itemValue })
+                    setFormData({ ...formData, typeRoom: itemValue })
                   }
                 >
                   <Picker.Item label="Chung cư" value="Chung cư" />
@@ -155,22 +142,22 @@ export const EditPost = (props: IPostProps) => {
                 </Picker>
                 <Text style={styles.label}>Giá phòng</Text>
                 <TextInput
-                  value={formData.price}
+                  value={formData.price.toString()}
                   style={styles.input}
                   placeholder="1000000"
                   keyboardType="numeric"
                   onChangeText={(text) =>
-                    setFormData({ ...formData, price: text })
+                    setFormData({ ...formData, price: Number(text) })
                   }
                 />
                 <Text style={styles.label}>Tiền cọc</Text>
                 <TextInput
-                  value={formData.deposit}
+                  value={formData.deposit.toString()}
                   style={styles.input}
                   placeholder="500000"
                   keyboardType="numeric"
                   onChangeText={(text) =>
-                    setFormData({ ...formData, deposit: text })
+                    setFormData({ ...formData, deposit: Number(text) })
                   }
                 />
 
@@ -178,7 +165,7 @@ export const EditPost = (props: IPostProps) => {
                 <Text style={styles.label}>Mô tả</Text>
                 <TextInput
                   value={formData.description}
-                  style={[styles.input, styles.textarea]}
+                  style={[styles.input, styles.textArea]}
                   placeholder="Nhập mô tả về phòng..."
                   multiline
                   numberOfLines={3} // Hiển thị tối đa 3 dòng
@@ -207,10 +194,10 @@ export const EditPost = (props: IPostProps) => {
               </View>
               <Text style={styles.label}>Phòng ngủ</Text>
               <Picker
-                selectedValue={formData.bedRoomNumber}
+                selectedValue={formData.bedroom}
                 style={styles.input}
                 onValueChange={(itemValue) =>
-                  setFormData({ ...formData, bedRoomNumber: itemValue })
+                  setFormData({ ...formData, bedroom: itemValue })
                 }
               >
                 <Picker.Item label="1" value="1" />
@@ -219,10 +206,10 @@ export const EditPost = (props: IPostProps) => {
               </Picker>
               <Text style={styles.label}>Phòng tắm</Text>
               <Picker
-                selectedValue={formData.bathRoomNumber}
+                selectedValue={formData.bathroom}
                 style={styles.input}
                 onValueChange={(itemValue) =>
-                  setFormData({ ...formData, bathRoomNumber: itemValue })
+                  setFormData({ ...formData, bathroom: itemValue })
                 }
               >
                 <Picker.Item label="1" value="1" />
@@ -236,15 +223,15 @@ export const EditPost = (props: IPostProps) => {
                     key={item}
                     style={[
                       styles.amenityButton,
-                      formData.amenities.includes(item) && styles.activeAmenity,
+                      [formData.comfort].includes(item) && styles.activeAmenity,
                     ]}
                     onPress={() => toggleAmenity(item)}
                   >
                     <Text
                       style={[
                         styles.amenityText,
-                        formData.amenities.includes(item) &&
-                          styles.activeAmenityText,
+                        [formData.comfort].includes(item) &&
+                        styles.activeAmenityText,
                       ]}
                     >
                       {item}
@@ -261,11 +248,11 @@ export const EditPost = (props: IPostProps) => {
               <TextInput
                 style={styles.input}
                 placeholder="Nhập tên của bạn"
-                value={formData.contact.name}
+                value={formData.userId}
                 onChangeText={(text) =>
                   setFormData({
                     ...formData,
-                    contact: { ...formData.contact, name: text },
+                    userId: text,
                   })
                 }
               />
@@ -274,11 +261,11 @@ export const EditPost = (props: IPostProps) => {
                 style={styles.input}
                 placeholder="Nhập số điện thoại"
                 keyboardType="numeric"
-                value={formData.contact.phone}
+                value={formData.userId}
                 onChangeText={(text) =>
                   setFormData({
                     ...formData,
-                    contact: { ...formData.contact, phone: text },
+                    userId: text,
                   })
                 }
               />
@@ -286,12 +273,12 @@ export const EditPost = (props: IPostProps) => {
               <TextInput
                 style={[styles.input, styles.textArea]}
                 placeholder="Nhập ghi chú thêm"
-                value={formData.contact.note}
+                value={formData.description}
                 multiline
                 onChangeText={(text) =>
                   setFormData({
                     ...formData,
-                    contact: { ...formData.contact, note: text },
+                    description: text,
                   })
                 }
               />

@@ -11,7 +11,7 @@ export interface Place {
   address: string,
   bedroom: number,
   bathroom: number,
-  comfort: number,
+  comfort: string,
   image: string,
   userId: string,
   createdAt: string,

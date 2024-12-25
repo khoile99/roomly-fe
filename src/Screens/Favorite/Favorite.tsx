@@ -2,21 +2,13 @@ import { i18n, LocalizationKey } from "@/Localization";
 import React from "react";
 import {
   View,
-  Text,
-  Image,
   StyleSheet,
-  TouchableOpacity,
   ScrollView,
-  FlatList,
-  Linking,
 } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import MapView, { Marker } from "react-native-maps";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
-import { User } from "@/Services";
 import { Place } from "@/Services";
-import { PlaceCardFavorite } from "@/Components/PlaceCard";
+import { PlaceCard } from "@/Components/PlaceCard";
 
 export interface IFavoriteProps {
   data: Place[] | undefined;
@@ -40,16 +32,17 @@ export const Favorite = (props: IFavoriteProps) => {
         <View style={styles.container}>
           {data?.map((place) => {
             return (
-              <PlaceCardFavorite
+              <PlaceCard
                 place={place}
                 key={place.id}
                 pressDelete={() => {
                   console.log(`delete ${place.id}`);
                 }}
                 pressEdit={() => {
-                  navigation.navigate("Edit Post", { id: place.id });
+                  // navigation.navigate("Edit Post", { id: place.id });
                 }}
-              ></PlaceCardFavorite>
+                showEdit={false}
+              ></PlaceCard>
             );
           })}
         </View>

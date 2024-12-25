@@ -1,21 +1,36 @@
 import { EditPost } from "./EditPost";
-import React, { useState, useEffect } from "react";
-import { useLazyGetUserQuery } from "@/Services";
-import { useRoute } from "@react-navigation/native";
+import React, { useEffect } from "react";
+import { useRoute, RouteProp } from "@react-navigation/native";
+import SecureStore from "@/Store/SecureStore";
+import { useGetPlacesMutation } from "@/Services";
+
+type RouteParams = {
+  EditPost: {
+    id: number;
+  };
+};
 
 export const EditPostContainer = () => {
-  const [userId, setUserId] = useState("9");
+  const route = useRoute<RouteProp<RouteParams, "EditPost">>();
+  const { id } = route.params || 0;
 
-  //id bài post
-  const route = useRoute();
-  const { id } = route.params;
-
-  const [fetchOne, { data, isSuccess, isLoading, isFetching, error }] =
-    useLazyGetUserQuery();
+  const [fetchPlaces, { data, isSuccess, isLoading, error }] =
+    useGetPlacesMutation();
 
   useEffect(() => {
-    fetchOne(userId);
-  }, [fetchOne, userId]);
+    const fetchData = async () => {
+      const accessToken = await SecureStore.getAccessToken();
+      fetchPlaces({ accessToken });
+    };
 
-  return <EditPost data={data} isLoading={isLoading} />;
+    fetchData();
+  }, [fetchPlaces]);
+
+  if (data?.data) {
+    for (var place of data?.data) {
+      if (place.id == id) {
+        return <EditPost data={place} isLoading={isLoading} />;
+      }
+    }
+  }
 };

@@ -5,10 +5,12 @@ import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
 import { Place } from "@/Services";
 import { PlaceCard } from "@/Components/PlaceCard";
+import { ProfileScreens } from "..";
 
 export interface IManagePostProps {
   places: Place[] | undefined;
   isLoading: boolean;
+  onNavigate: (string: ProfileScreens, props: any) => void;
 }
 
 export const PostManage = (props: IManagePostProps) => {
@@ -31,7 +33,8 @@ export const PostManage = (props: IManagePostProps) => {
                 place={place}
                 key={place.id}
                 pressDelete={() => { console.log(`delete ${place.id}`) }}
-                pressEdit={() => { console.log(`edit ${place.id}`) }}>
+                pressEdit={() => { props.onNavigate(ProfileScreens.EDIT_POST, { id: place.id }) }}
+                showEdit={true}>
               </PlaceCard>
             })
           }

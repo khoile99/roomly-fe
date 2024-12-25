@@ -1,6 +1,5 @@
 import { i18n, LocalizationKey } from "@/Localization";
 import React from "react";
-// import { View, Text, StyleSheet } from "react-native";
 import {
   View,
   Text,
@@ -15,46 +14,15 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import MapView, { Marker } from "react-native-maps";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
-import { User } from "@/Services";
+import { Place } from "@/Services";
 
 export interface IPostDetailProps {
-  data: User | undefined;
+  data: Place;
   isLoading: boolean;
 }
 
 export const PostDetail = (props: IPostDetailProps) => {
   const { data, isLoading } = props;
-
-  const similarRooms = [
-    {
-      id: "1",
-      name: "Nhà trọ Bình Tân 1",
-      location: "Long Thạnh Mỹ, quận 9",
-      price: "2.500.000",
-      area: "10 m2",
-    },
-    {
-      id: "2",
-      name: "Nhà trọ Bình Tân 1",
-      location: "Long Thạnh Mỹ, quận 9",
-      price: "2.500.000",
-      area: "10 m2",
-    },
-    {
-      id: "3",
-      name: "Nhà trọ Bình Tân 1",
-      location: "Long Thạnh Mỹ, quận 9",
-      price: "2.500.000",
-      area: "10 m2",
-    },
-    {
-      id: "4",
-      name: "Nhà trọ Bình Tân 1",
-      location: "Long Thạnh Mỹ, quận 9",
-      price: "2.500.000",
-      area: "10 m2",
-    },
-  ];
 
   const amenitiesData = [
     { id: "1", name: "Tivi", icon: "tv" },
@@ -196,7 +164,7 @@ export const PostDetail = (props: IPostDetailProps) => {
                   latitudeDelta: 0.01,
                   longitudeDelta: 0.01,
                 }}
-                nestedScrollEnabled={true}
+              // nestedScrollEnabled={true}
               >
                 <Marker
                   coordinate={{ latitude: 10.762622, longitude: 106.660172 }}
@@ -208,18 +176,18 @@ export const PostDetail = (props: IPostDetailProps) => {
             <View style={styles.details}>
               <Text style={styles.title}>Các phòng tương tự</Text>
               <View style={styles.grid}>
-                {similarRooms.map((room) => (
-                  <View key={room.id} style={styles.card}>
+                {
+                  <View key={data.id} style={styles.card}>
                     <Image
-                      source={{ uri: room.imageUrl }}
+                      source={{ uri: data.image }}
                       style={styles.image}
                     />
-                    <Text style={styles.roomName}>{room.name}</Text>
-                    <Text>{room.location}</Text>
-                    <Text style={styles.price}>{room.price} / tháng</Text>
-                    <Text>{room.area}</Text>
+                    <Text style={styles.roomName}>{data.namePost}</Text>
+                    <Text>{data.address}</Text>
+                    <Text style={styles.price}>{data.price} / tháng</Text>
+                    {/* <Text>{data.area}</Text> */}
                   </View>
-                ))}
+                }
               </View>
             </View>
 
@@ -262,7 +230,9 @@ const styles = StyleSheet.create({
     color: "#f00",
     marginVertical: 8,
     borderRadius: 4,
-    border: "1px solid #f00",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#f00"
   },
   roomLocation: { fontSize: 14, color: "#555" },
 
@@ -336,10 +306,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 8,
     width: "30%",
-
     flexWrap: "wrap",
     display: "flex",
-    flexDirection: "row",
     // justifyContent: "space-between",
   },
   itemText: {

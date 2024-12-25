@@ -1,1 +1,1 @@
-import * from "./PostDetailContainer";
+export * from "./PostDetailContainer";

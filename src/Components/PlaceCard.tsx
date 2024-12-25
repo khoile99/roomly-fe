@@ -11,6 +11,7 @@ export const PlaceCard = (props:
     place: Place;
     pressDelete: () => void;
     pressEdit: () => void;
+    showEdit: Boolean;
   }) => {
   const urls = ["https://khoi-public.s3.ap-northeast-1.amazonaws.com/8bc7add356f6f20160387c15cae5e71a.png"]
   return (
@@ -26,10 +27,11 @@ export const PlaceCard = (props:
         </View>
         <Text style={styles.price}>$ {props.place.price} / {i18n.t(LocalizationKey.MONTH)}</Text>
       </View>
-      <View style={styles.btnContainer}>
-        <Button style={styles.btn} colorScheme={"red"} onPress={() => props.pressDelete()}><Text style={styles.txtBtn}>{i18n.t(LocalizationKey.DELETE)}</Text></Button>
-        <Button style={styles.btn} onPress={() => props.pressEdit()}><Text style={styles.txtBtn}>{i18n.t(LocalizationKey.EDIT)}</Text></Button>
-      </View>
+      {props.showEdit &&
+        <View style={styles.btnContainer}>
+          <Button style={styles.btn} colorScheme={"red"} onPress={() => props.pressDelete()}><Text style={styles.txtBtn}>{i18n.t(LocalizationKey.DELETE)}</Text></Button>
+          <Button style={styles.btn} onPress={() => props.pressEdit()}><Text style={styles.txtBtn}>{i18n.t(LocalizationKey.EDIT)}</Text></Button>
+        </View>}
     </View>
   );
 };
