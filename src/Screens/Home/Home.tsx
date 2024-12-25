@@ -1,5 +1,5 @@
 import { i18n, LocalizationKey } from "@/Localization";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -12,15 +12,42 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
-import { User } from "@/Services";
+import { Place } from "@/Services";
 
 export interface IHomeProps {
-  data: User | undefined;
+  data: Place[] | undefined;
   isLoading: boolean;
 }
 
 export const Home = (props: IHomeProps) => {
   const { data, isLoading } = props;
+  const [typeId, setTypeId] = React.useState(0);
+  const [places, setPlaces] = React.useState([] as Place[]);
+  const [topPlaces, setTopPlaces] = React.useState([] as Place[]);
+
+  const placeTypes = [
+    "Nhà trọ",
+    "Căn hộ mini",
+    "Chung cư",
+    "Nhà riêng",
+  ]
+  const onPressPlace = (id: number) => {
+    setTypeId(id);
+    var filter = data?.filter((place) => place.typeRoom == placeTypes[id])
+    if (filter) {
+      setPlaces(filter)
+    }
+  }
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      // Set initial places based on the first place type
+      const initialPlaces = data.filter((place) => place.typeRoom === placeTypes[0]);
+      setPlaces(initialPlaces);
+      setTopPlaces([data[0], data[1], data[2]])
+    }
+  }, [data]);
+
   return (
     <ScrollView style={styles.container}>
       <StatusBar style="auto" />
@@ -52,21 +79,16 @@ export const Home = (props: IHomeProps) => {
           {/* Filter Tabs */}
           <View style={styles.filterTabs}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {/* Chỗ này cần data category để map */}
-              {[
-                "Nhà trọ",
-                "Căn hộ mini",
-                "Chung cư",
-                "Nhà thuê nguyên căn",
-              ].map((item, index) => (
+              {placeTypes.map((item, index) => (
                 <TouchableOpacity
                   key={index}
-                  style={[styles.tab, index === 0 && styles.activeTab]}
+                  style={[styles.tab, index === typeId && styles.activeTab]}
+                  onPress={() => onPressPlace(index)}
                 >
                   <Text
                     style={[
                       styles.tabText,
-                      index === 0 && styles.activeTabText,
+                      index === index && styles.activeTabText,
                     ]}
                   >
                     {item}
@@ -78,52 +100,40 @@ export const Home = (props: IHomeProps) => {
 
           {/* Nearby Section */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Nơi ở gần bạn</Text>
-            <Text style={styles.seeMore}>Xem thêm</Text>
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
               style={styles.horizontalScroll}
             >
-              {/* Chỗ này cân data các bài đăng gần với vị trí */}
-              {[
-                "Nhà trọ Tân Phú",
-                "Nhà trọ Tân Lập",
-                "Nhà trọ ABC",
-                "Nhà trọ XYZ",
-              ].map((name, index) => (
+              {places.map((place, index) => (
                 <View key={index} style={styles.card}>
                   <Image
-                    source={{ uri: "https://via.placeholder.com/150" }}
+                    src={place.image}
                     style={styles.cardImage}
                   />
-                  <Text style={styles.cardDistance}>1.8 km</Text>
-                  <Text style={styles.cardName}>{name}</Text>
-                  <Text style={styles.cardLocation}>Nguyễn Minh Tâm</Text>
+                  <Text style={styles.cardDistance}>{place.size}m2</Text>
+                  <Text style={styles.cardName}>{place.namePost}</Text>
+                  <Text style={styles.cardLocation}>{place.address}</Text>
                 </View>
-              ))}
+              )
+              )}
             </ScrollView>
           </View>
 
           {/* Best Choices Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Những lựa chọn tốt nhất</Text>
-            <Text style={styles.seeMore}>Xem thêm</Text>
             {/* Chỗ này cần data các bài đăng best theo tiêu chí nào thì chưa biết */}
-            {[
-              "Nhà trọ Thiên Sơn 1",
-              "Nhà trọ Thiên Sơn 2",
-              "Nhà trọ Thiên Sơn 3",
-            ].map((name, index) => (
+            {topPlaces?.map((place, index) => (
               <View key={index} style={styles.listItem}>
                 <Image
-                  source={{ uri: "https://via.placeholder.com/100" }}
+                  src={place.image}
                   style={styles.listImage}
                 />
                 <View>
-                  <Text style={styles.listName}>{name}</Text>
-                  <Text style={styles.listPrice}>$3,500 / tháng</Text>
-                  <Text style={styles.listDetails}>1 phòng ngủ</Text>
+                  <Text style={styles.listName}>{place.namePost}</Text>
+                  <Text style={styles.listPrice}>${place.price} / tháng</Text>
+                  <Text style={styles.listDetails}>{place.bedroom} phòng ngủ</Text>
                 </View>
               </View>
             ))}

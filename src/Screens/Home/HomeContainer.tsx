@@ -1,20 +1,16 @@
 import { Home } from "./Home";
-import React, { useState, useEffect } from "react";
-import { useGetUserMutation } from "@/Services";
-import SecureStore from "@/Store/SecureStore";
+import React, { useEffect } from "react";
+import { useLazyGetAllPlacesQuery } from "@/Services";
 
 export const HomeContainer = () => {
-  const [fetchUser, { data, isSuccess, isLoading, error }] =
-    useGetUserMutation();
+  const [fetchAll, { data, isSuccess, isLoading, isFetching, error }] =
+    useLazyGetAllPlacesQuery();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const accessToken = await SecureStore.getAccessToken();
-      fetchUser({ accessToken });
-    };
+    fetchAll("");
+  }, [fetchAll]);
 
-    fetchData();
-  }, [fetchUser]);
 
-  return <Home data={data?.user} isLoading={isLoading} />;
+  return <Home data={data?.data} isLoading={isLoading} />;
+
 };

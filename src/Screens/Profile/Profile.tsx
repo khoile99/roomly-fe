@@ -32,7 +32,7 @@ export const Profile = (props: IProfileProps) => {
         </HStack>
       ) : (
         <>
-          <Image source={require('assets/profile-sample.png')} style={styles.img}></Image>
+          <Image src="https://studiochupanhdep.com/Upload/Images/Album/anh-cv-02.jpg" style={styles.img}></Image>
           <Heading fontSize="md" style={styles.usernameTxt}>
             {`${data?.lName} ${data?.fName}`}
           </Heading>

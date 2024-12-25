@@ -14,6 +14,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
 import { User } from "@/Services";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export interface ISearchProps {
   data: User | undefined;
@@ -40,7 +41,7 @@ export const Search = (props: ISearchProps) => {
     },
   ];
 
-  const handleRemoveHistory = (index) => {
+  const handleRemoveHistory = (index: number) => {
     const newHistory = [...searchHistory];
     newHistory.splice(index, 1);
     setSearchHistory(newHistory);
@@ -65,12 +66,6 @@ export const Search = (props: ISearchProps) => {
                 style={styles.searchInput}
                 placeholder="Tìm kiếm tại đây . . ."
               />
-              {/* <TouchableOpacity style={styles.filterButton}>
-                <Image
-                  // source={require("./assets/filter-icon.png")}
-                  style={styles.filterIcon}
-                />
-              </TouchableOpacity> */}
               <TouchableOpacity style={styles.filterButton}>
                 <Icon name="filter-list" size={24} color="#fff" />
               </TouchableOpacity>
@@ -96,7 +91,7 @@ export const Search = (props: ISearchProps) => {
               </Text>
               <FlatList
                 data={suggestions}
-                horizontal={false}
+                horizontal={true}
                 numColumns={1}
                 renderItem={({ item }) => (
                   <TouchableOpacity style={styles.suggestionCard}>

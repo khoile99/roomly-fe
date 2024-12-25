@@ -1,5 +1,9 @@
 import { API } from "../base";
 
+interface PlacesResponse {
+  success: Boolean,
+  data: Place[],
+}
 
 export interface Place {
   id: number,
@@ -18,6 +22,7 @@ export interface Place {
   updatedAt: string,
   userName: string,
   userPhone: string,
+  size: number,
 }
 
 interface UpdatePlace1 {
@@ -124,14 +129,17 @@ const placeAPI = API.injectEndpoints({
       query: ({ accessToken }) => ({
         url: `post/create/step3`,
         method: "POST",
-        body: {},
+        body: { image: "" },
         headers: {
           Authorization: `Bearer ${accessToken}`,
         }
       }),
     }),
+    getAllPlaces: build.query<PlacesResponse, string>({
+      query: () => `post/get-alls`,
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useGetPlacesMutation, useUpdatePlace1Mutation, useUpdatePlace2Mutation, useUpdatePlace3Mutation, useCreatePlace1Mutation, useCreatePlace2Mutation, useCreatePlace3Mutation } = placeAPI;
+export const { useGetPlacesMutation, useUpdatePlace1Mutation, useUpdatePlace2Mutation, useUpdatePlace3Mutation, useCreatePlace1Mutation, useCreatePlace2Mutation, useCreatePlace3Mutation, useLazyGetAllPlacesQuery } = placeAPI;

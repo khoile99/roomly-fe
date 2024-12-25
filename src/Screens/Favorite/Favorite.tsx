@@ -4,15 +4,20 @@ import {
   View,
   StyleSheet,
   ScrollView,
+  TouchableOpacity
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
 import { Place } from "@/Services";
 import { PlaceCard } from "@/Components/PlaceCard";
+import { ProfileScreens } from "..";
+
+
 
 export interface IFavoriteProps {
   data: Place[] | undefined;
   isLoading: boolean;
+  onNavigate: (string: ProfileScreens, props: any) => void;
 }
 
 export const Favorite = (props: IFavoriteProps) => {
@@ -32,17 +37,19 @@ export const Favorite = (props: IFavoriteProps) => {
         <View style={styles.container}>
           {data?.map((place) => {
             return (
-              <PlaceCard
-                place={place}
-                key={place.id}
-                pressDelete={() => {
-                  console.log(`delete ${place.id}`);
-                }}
-                pressEdit={() => {
-                  // navigation.navigate("Edit Post", { id: place.id });
-                }}
-                showEdit={false}
-              ></PlaceCard>
+              <TouchableOpacity key={place.id}
+                onPress={() => props.onNavigate(ProfileScreens.POST_DETAIL, { id: place.id })}>
+                <PlaceCard
+                  place={place}
+                  pressDelete={() => {
+                    console.log(`delete ${place.id}`);
+                  }}
+                  pressEdit={() => {
+                    props.onNavigate(ProfileScreens.POST_DETAIL, { id: place.id });
+                  }}
+                  showEdit={false}
+                ></PlaceCard>
+              </TouchableOpacity>
             );
           })}
         </View>

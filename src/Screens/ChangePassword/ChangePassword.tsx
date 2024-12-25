@@ -26,7 +26,7 @@ export const ChangePassword = () => {
   }
   return (
     <View style={styles.container}>
-      <Image source={require('assets/profile-sample.png')} style={styles.img}></Image>
+      <Image src="https://studiochupanhdep.com/Upload/Images/Album/anh-cv-02.jpg" style={styles.img}></Image>
       <View style={styles.innerContainer}>
         <View>
           <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.OLD_PASSWORD)}</Text>

@@ -13,10 +13,9 @@ export const PlaceCard = (props:
     pressEdit: () => void;
     showEdit: Boolean;
   }) => {
-  const urls = ["https://khoi-public.s3.ap-northeast-1.amazonaws.com/8bc7add356f6f20160387c15cae5e71a.png"]
   return (
     <View style={styles.container}>
-      <Image style={styles.img} src={urls[0]} />
+      <Image style={styles.img} src={props.place.image} />
       <View style={styles.innerContainer}>
         <Text style={styles.title}>
           {props.place.namePost}
