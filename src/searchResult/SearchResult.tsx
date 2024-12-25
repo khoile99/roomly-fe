@@ -10,6 +10,7 @@ import {
   StyleSheet,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { Place } from "@/Services";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
 import { User } from "@/Services";
@@ -19,7 +20,7 @@ export interface ISearchResult {
   isLoading: boolean;
 }
 
-export const SearchResult = (props: ISearchProps) => {
+export const SearchResult = (props: ISearchResult) => {
   const { data, isLoading } = props;
 
   const searchResults = [
@@ -46,18 +47,18 @@ export const SearchResult = (props: ISearchProps) => {
     // Thêm dữ liệu khác...
   ];
 
-  const renderCard = ({ item }) => (
+  const renderCard = (item: Place) => (
     <View style={styles.card}>
       <Image source={{ uri: item.image }} style={styles.cardImage} />
       <View style={styles.cardContent}>
-        <Text style={styles.cardTitle}>{item.title}</Text>
+        <Text style={styles.cardTitle}>{item.namePost}</Text>
         <Text style={styles.cardLocation}>
-          <Icon name="location-on" size={16} color="#888" /> {item.location}
+          <Icon name="location-on" size={16} color="#888" /> {item.address}
         </Text>
         <Text style={styles.cardPrice}>{item.price} / tháng</Text>
         <View style={styles.cardInfo}>
-          <Text>{item.bedrooms} phòng ngủ</Text>
-          <Text>{item.area}</Text>
+          <Text>{item.bedroom} phòng ngủ</Text>
+          <Text>{item.comfort}</Text>
         </View>
       </View>
     </View>
@@ -108,7 +109,7 @@ export const SearchResult = (props: ISearchProps) => {
 };
 
 const styles = StyleSheet.create({
-  ccontainer: {
+  container: {
     flex: 1,
     backgroundColor: "#fff",
     // alignItems: "center",

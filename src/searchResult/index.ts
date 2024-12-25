@@ -1,1 +1,1 @@
-export * from "./SearchResultConainer";
+export * from "./SearchResultContainer";

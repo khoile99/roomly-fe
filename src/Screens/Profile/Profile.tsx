@@ -34,7 +34,7 @@ export const Profile = (props: IProfileProps) => {
         <>
           <Image source={require('assets/profile-sample.png')} style={styles.img}></Image>
           <Heading fontSize="md" style={styles.usernameTxt}>
-            {`${data?.lname} ${data?.fname}`}
+            {`${data?.lName} ${data?.fName}`}
           </Heading>
           <View style={styles.navigatorList}>
             <ProfileNavigator onPress={() => { props.onNavigate(ProfileScreens.PROFILE_INFORMATION) }} title={i18n.t(LocalizationKey.PERSONAL_INFORMATION)} icon={RounderProfileIcon}></ProfileNavigator>

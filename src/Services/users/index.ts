@@ -5,10 +5,16 @@ interface UserResponse {
   user: User;
 }
 
+interface ChangeInfoRequest {
+  lName: string;
+  fName: string;
+  email: string;
+}
+
 export interface User {
   id: number;
-  lname: string;
-  fname: string;
+  lName: string;
+  fName: string;
   email: string;
   phone: string;
   createdAt: string;
@@ -39,6 +45,10 @@ export interface LoginResponse extends Message {
   refresh_token: string,
 }
 
+interface UpdateUserResponse extends Message {
+  data: User;
+}
+
 const userApi = API.injectEndpoints({
   endpoints: (build) => ({
     getUser: build.mutation<UserResponse, { accessToken: string }>({
@@ -67,8 +77,18 @@ const userApi = API.injectEndpoints({
         }
       }),
     }),
+    changeInfo: build.mutation<UpdateUserResponse, { accessToken: string, body: ChangeInfoRequest }>({
+      query: ({ accessToken, body: credentials }) => ({
+        url: "user/update",
+        method: "POST",
+        body: credentials,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        }
+      }),
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useGetUserMutation, useLoginMutation, useChangePasswordMutation } = userApi;
+export const { useGetUserMutation, useLoginMutation, useChangePasswordMutation, useChangeInfoMutation } = userApi;

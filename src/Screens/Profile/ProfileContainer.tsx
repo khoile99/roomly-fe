@@ -15,7 +15,6 @@ export const ProfileContainer = ({
   navigation,
 }: TotalScreen) => {
   const [accessToken, setAccessToken] = useState<string>("");
-  const [userId, setUserId] = useState("9");
 
   const onNavigateRootScreen = (screen: RootScreens) => {
     navigation.navigate(screen);
@@ -31,12 +30,8 @@ export const ProfileContainer = ({
   useFocusEffect(
     React.useCallback(() => {
       const fetchAccessToken = async () => {
-        try {
           const token = await SecureStore.getAccessToken();
           setAccessToken(token);
-        } catch (err) {
-          console.error("Error fetching access token:", err);
-        }
       };
       fetchAccessToken();
     }, [])
