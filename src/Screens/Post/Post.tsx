@@ -13,7 +13,7 @@ import { Picker } from "@react-native-picker/picker";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
 import SecureStore from "@/Store/SecureStore";
-import { Message, useCreatePlace1Mutation, useCreatePlace2Mutation, useCreatePlace3Mutation } from "@/Services";
+import { ResponseFail, useCreatePlace1Mutation, useCreatePlace2Mutation, useCreatePlace3Mutation } from "@/Services";
 
 
 export const Post = () => {
@@ -59,9 +59,9 @@ export const Post = () => {
           alert(response.message);
           setStep(step)
         } catch (err) {
-          const error = err as Message;
-          if (error.message) {
-            alert(error.message);
+          const error = err as ResponseFail;
+          if (error.data.message) {
+            alert(error.data.message);
           } else {
             alert(i18n.t(LocalizationKey.CREATE_FAIL))
           }
@@ -79,9 +79,9 @@ export const Post = () => {
           alert(response.message);
           setStep(step)
         } catch (err) {
-          const error = err as Message;
-          if (error.message) {
-            alert(error.message);
+          const error = err as ResponseFail;
+          if (error.data.message) {
+            alert(error.data.message);
           } else {
             alert(i18n.t(LocalizationKey.CREATE_FAIL))
           }
@@ -93,9 +93,10 @@ export const Post = () => {
           alert(response.message);
           setStep(step)
         } catch (err) {
-          const error = err as Message;
-          if (error.message) {
-            alert(error.message);
+          console.log(err);
+          const error = err as ResponseFail;
+          if (error.data.message) {
+            alert(error.data.message);
           } else {
             alert(i18n.t(LocalizationKey.CREATE_FAIL))
           }
