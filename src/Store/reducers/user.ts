@@ -1,4 +1,3 @@
-import { User } from "@/Services";
 import { createSlice } from "@reduxjs/toolkit";
 
 const slice = createSlice({
