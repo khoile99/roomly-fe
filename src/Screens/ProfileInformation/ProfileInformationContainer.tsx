@@ -1,20 +1,9 @@
 import { ProfileInformation } from "./ProfileInformation";
-import React, { useState, useEffect } from "react";
-import { useGetUserMutation } from "@/Services";
-import SecureStore from "@/Store/SecureStore";
+import React from "react";
+import { store } from "@/Store";
 
 export const ProfileInformationContainer = () => {
-  const [fetchUser, { data, isSuccess, isLoading, error }] =
-  useGetUserMutation();
+  const data = store.getState().user
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const accessToken = await SecureStore.getAccessToken();
-      fetchUser({ accessToken });
-    };
-
-    fetchData();
-  }, [fetchUser]);
-
-  return <ProfileInformation data={data?.user} isLoading={isLoading} />;
+  return <ProfileInformation data={data.user} isLoading={data.isLoading} />;
 };

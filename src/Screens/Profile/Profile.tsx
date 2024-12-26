@@ -1,5 +1,5 @@
 import { i18n, LocalizationKey } from "@/Localization";
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading, Button } from "native-base";
@@ -10,15 +10,17 @@ import LockIcon from "assets/lock-icon";
 import LogoutIcon from "assets/logout-icon";
 import { ProfileNavigator } from "@/Components/ProfileNavigator";
 import { ProfileScreens } from "..";
+import { store } from "@/Store";
 
 export interface IProfileProps {
-  data: User | undefined;
   isLoading: boolean;
   onNavigate: (string: ProfileScreens) => void;
 }
 
 export const Profile = (props: IProfileProps) => {
-  const { data, isLoading } = props;
+  const { isLoading } = props;
+  const [user, setUser] = useState<User>();
+  store.subscribe(() => setUser(store.getState().user.user))
 
   return (
     <View style={styles.container}>
@@ -34,7 +36,7 @@ export const Profile = (props: IProfileProps) => {
         <>
           <Image src="https://studiochupanhdep.com/Upload/Images/Album/anh-cv-02.jpg" style={styles.img}></Image>
           <Heading fontSize="md" style={styles.usernameTxt}>
-            {`${data?.lName} ${data?.fName}`}
+            {`${user?.lName} ${user?.fName}`}
           </Heading>
           <View style={styles.navigatorList}>
             <ProfileNavigator onPress={() => { props.onNavigate(ProfileScreens.PROFILE_INFORMATION) }} title={i18n.t(LocalizationKey.PERSONAL_INFORMATION)} icon={RounderProfileIcon}></ProfileNavigator>

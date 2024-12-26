@@ -1,5 +1,5 @@
 import { i18n, LocalizationKey } from "@/Localization";
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading, Button } from "native-base";
@@ -7,27 +7,34 @@ import { User } from "@/Services";
 import { Image } from "react-native";
 import { useChangeInfoMutation, ResponseFail } from "@/Services";
 import SecureStore from "@/Store/SecureStore";
+import { store } from "@/Store";
+import { changeUser } from "@/Store/reducers";
 
 export interface IProfileInformationProps {
-  data: User | undefined;
+  data: User;
   isLoading: boolean;
 }
 
 export const ProfileInformation = (props: IProfileInformationProps) => {
   const [changeInfo, { isLoading: isChangeLoading, isError, error }] = useChangeInfoMutation();
   const { data, isLoading } = props;
+  let [user, setUser] = React.useState(data);
+  let previousUser = data;
+  const [edit, setEdit] = React.useState(false);
   const onCancle = () => {
-    setUser(newUser())
     setEdit(false);
   }
   const onSave = async () => {
     try {
-      var changeUser = { fName: user.fName, lName: user.lName, email: user.email }
-      console.log(changeUser);
+      var payload = { fName: user.fName, lName: user.lName, email: user.email };
       const accessToken = await SecureStore.getAccessToken();
-      const response = await changeInfo({ accessToken: accessToken, body: changeUser }).unwrap();
+      const response = await changeInfo({ accessToken: accessToken, body: payload }).unwrap();
+      store.dispatch(changeUser(response.data));
+      setUser(response.data);
+      previousUser = response.data;
       alert(response.message);
     } catch (err) {
+      setUser(previousUser);
       console.log(err);
       const error = err as ResponseFail;
       if (error.data.message) {
@@ -37,20 +44,6 @@ export const ProfileInformation = (props: IProfileInformationProps) => {
       }
     }
   }
-  const newUser = () => {
-    return {
-      id: 0,
-      lName: "",
-      fName: "",
-      email: "",
-      phone: "",
-      createdAt: "",
-      updatedAt: "",
-      password: "",
-    }
-  }
-  let [user, setUser] = React.useState(newUser());
-  const [edit, setEdit] = React.useState(false);
   return (
     <ScrollView>
       <StatusBar style="auto" />
@@ -67,15 +60,15 @@ export const ProfileInformation = (props: IProfileInformationProps) => {
           <View style={styles.innerContainer}>
             <View>
               <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.LAST_NAME)}</Text>
-              <TextInput placeholder={data?.lName} style={styles.input} editable={edit} onChangeText={(newText) => setUser((prev) => ({ ...prev, lName: newText }))}>{edit ? user.lName : data?.lName}</TextInput>
+              <TextInput style={styles.input} editable={edit} onChangeText={(newText) => setUser((prev) => ({ ...prev, lName: newText }))}>{user.lName}</TextInput>
             </View>
             <View>
               <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.FIRST_NAME)}</Text>
-              <TextInput placeholder={data?.fName} style={styles.input} editable={edit} onChangeText={(newText) => setUser((prev) => ({ ...prev, fName: newText }))}>{edit ? user.fName : data?.fName}</TextInput>
+              <TextInput style={styles.input} editable={edit} onChangeText={(newText) => setUser((prev) => ({ ...prev, fName: newText }))}>{user.fName}</TextInput>
             </View>
             <View>
               <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.EMAIL)}</Text>
-              <TextInput placeholder={data?.email} style={styles.input} editable={edit} onChangeText={(newText) => setUser((prev) => ({ ...prev, email: newText }))}>{edit ? user.email : data?.email}</TextInput>
+              <TextInput style={styles.input} editable={edit} onChangeText={(newText) => setUser((prev) => ({ ...prev, email: newText }))}>{user.email}</TextInput>
             </View>
             {edit ?
               (<>
@@ -96,11 +89,11 @@ export const ProfileInformation = (props: IProfileInformationProps) => {
               </>) : (<>
                 <View>
                   <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.PHONE_NUMBER)}</Text>
-                  <TextInput placeholder={data?.phone} style={styles.input} editable={edit} onChangeText={newText => user.phone = newText}>{edit ? user.phone : data?.phone}</TextInput>
+                  <TextInput style={styles.input} editable={edit} onChangeText={newText => user.phone = newText}>{user.phone}</TextInput>
                 </View>
                 <View>
                   <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.CREATED_DATE)}</Text>
-                  <TextInput placeholder={data?.createdAt} style={styles.input} editable={edit} onChangeText={newText => user.createdAt = newText}>{edit ? user.createdAt : data?.createdAt}</TextInput>
+                  <TextInput style={styles.input} editable={edit} onChangeText={newText => user.createdAt = newText}>{user.createdAt}</TextInput>
                 </View>
                 <Button style={styles.btn} onPress={() => setEdit(true)}>
                   {i18n.t(LocalizationKey.EDIT)}

@@ -8,6 +8,8 @@ import { ProfileScreens, RootScreens } from "..";
 import { ProfileStackParamList } from "@/Navigation/Main";
 import SecureStore from "@/Store/SecureStore";
 import { useFocusEffect } from "@react-navigation/native";
+import { store } from "@/Store";
+import { changeUser } from "@/Store/reducers";
 
 type TotalScreen = NativeStackScreenProps<RootStackParamList & ProfileStackParamList>;
 
@@ -30,8 +32,8 @@ export const ProfileContainer = ({
   useFocusEffect(
     React.useCallback(() => {
       const fetchAccessToken = async () => {
-          const token = await SecureStore.getAccessToken();
-          setAccessToken(token);
+        const token = await SecureStore.getAccessToken();
+        setAccessToken(token);
       };
       fetchAccessToken();
     }, [])
@@ -40,7 +42,9 @@ export const ProfileContainer = ({
   useEffect(() => {
     const fetchData = async () => {
       const accessToken = await SecureStore.getAccessToken();
-      fetchUser({ accessToken });
+      var data = await fetchUser({ accessToken }).unwrap();
+      if (data.success)
+        store.dispatch(changeUser(data.user));
     };
 
     fetchData();
@@ -49,5 +53,6 @@ export const ProfileContainer = ({
   if (!accessToken) {
     return <NotLogin onNavigate={onNavigateRootScreen} />;
   }
-  return <Profile data={data?.user} isLoading={isLoading} onNavigate={onNavigateProfileScreen} />;
+
+  return <Profile isLoading={isLoading} onNavigate={onNavigateProfileScreen} />;
 };
