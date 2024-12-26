@@ -37,6 +37,7 @@ export type HomeStackParamList = {
 export type SearchStackParamList = {
   [SearchScreens.SEARCH]: undefined;
   [SearchScreens.SEARCH_RESULT]: undefined;
+  [SearchScreens.POST_DETAIL]: undefined;
 };
 const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
@@ -160,6 +161,10 @@ const SearchNavigator = () => {
       <SearchStack.Screen
         name={SearchScreens.SEARCH_RESULT}
         component={SearchResultContainer}
+      />
+      <SearchStack.Screen
+        name={SearchScreens.POST_DETAIL}
+        component={PostDetailContainer}
       />
     </SearchStack.Navigator>
   );

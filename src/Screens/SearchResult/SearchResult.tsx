@@ -13,10 +13,12 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Place, useLazyGetAllPlacesQuery } from "@/Services";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
+import { SearchScreens } from "..";
 
 export interface ISearchResult {
   search: string;
   isType: Boolean;
+  onNavigate: (string: SearchScreens, props: any) => void;
 }
 
 export const SearchResult = (props: ISearchResult) => {
@@ -45,19 +47,21 @@ export const SearchResult = (props: ISearchResult) => {
   }, [data]);
 
   const renderCard = (item: Place) => (
-    <View style={styles.card}>
-      <Image src={item.image} style={styles.cardImage} />
-      <View style={styles.cardContent}>
-        <Text style={styles.cardTitle}>{item.namePost}</Text>
-        <Text style={styles.cardLocation}>
-          <Icon name="location-on" size={16} color="#888" /> {item.address}
-        </Text>
-        <Text style={styles.cardPrice}>{item.price} / tháng</Text>
-        <View style={styles.cardInfo}>
-          <Text>{item.bedroom} phòng ngủ</Text>
+    <TouchableOpacity onPress={() => props.onNavigate(SearchScreens.POST_DETAIL, { id: item.id })}>
+      <View style={styles.card}>
+        <Image src={item.image} style={styles.cardImage} />
+        <View style={styles.cardContent}>
+          <Text style={styles.cardTitle}>{item.namePost}</Text>
+          <Text style={styles.cardLocation}>
+            <Icon name="location-on" size={16} color="#888" /> {item.address}
+          </Text>
+          <Text style={styles.cardPrice}>{item.price} / tháng</Text>
+          <View style={styles.cardInfo}>
+            <Text>{item.bedroom} phòng ngủ</Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (

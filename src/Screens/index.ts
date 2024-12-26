@@ -30,4 +30,5 @@ export enum HomeScreens {
 export enum SearchScreens {
   SEARCH = "Search",
   SEARCH_RESULT = "Search Result",
+  POST_DETAIL = "Post Detail",
 }
