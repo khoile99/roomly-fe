@@ -1,8 +1,7 @@
 import { PostDetail } from "./PostDetail";
 import React, { useEffect } from "react";
 import { useRoute, RouteProp } from "@react-navigation/native";
-import SecureStore from "@/Store/SecureStore";
-import { useGetPlacesMutation } from "@/Services";
+import { useLazyGetPlaceQuery } from "@/Services";
 
 type RouteParams = {
   PostDetail: {
@@ -14,24 +13,17 @@ export const PostDetailContainer = () => {
   const route = useRoute<RouteProp<RouteParams, "PostDetail">>();
   const { id } = route.params || 0;
 
-  const [fetchPlaces, { data, isSuccess, isLoading, error }] =
-    useGetPlacesMutation();
+  const [fetchPlace, { data, isSuccess, isLoading, error }] =
+    useLazyGetPlaceQuery();
 
   useEffect(() => {
     const fetchData = async () => {
-      const accessToken = await SecureStore.getAccessToken();
-      fetchPlaces({ accessToken });
+      fetchPlace(id.toString());
     };
 
     fetchData();
-  }, [fetchPlaces]);
+  }, [id, fetchPlace]);
 
-  if (data?.posts) {
-    for (var place of data?.posts) {
-      if (place.id == id) {
-        return <PostDetail data={place} isLoading={isLoading} />;
-      }
-    }
-  }
-
+  if (data?.data)
+    return <PostDetail data={data?.data} isLoading={isLoading} />;
 };

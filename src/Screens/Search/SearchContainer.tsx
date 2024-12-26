@@ -1,20 +1,14 @@
 import { Search } from "./Search";
-import React, { useState, useEffect } from "react";
-import { useGetUserMutation } from "@/Services";
-import SecureStore from "@/Store/SecureStore";
+import React from "react";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { SearchScreens } from "..";
+import { SearchStackParamList } from "@/Navigation/Main";
 
-export const SearchContainer = () => {
-  const [fetchUser, { data, isSuccess, isLoading, error }] =
-    useGetUserMutation();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const accessToken = await SecureStore.getAccessToken();
-      fetchUser({ accessToken });
-    };
-
-    fetchData();
-  }, [fetchUser]);
-
-  return <Search data={data?.user} isLoading={isLoading} />;
+export const SearchContainer = ({
+  navigation,
+}: NativeStackScreenProps<SearchStackParamList>) => {
+  const onNavigate = (screen: SearchScreens, props: any) => {
+    navigation.navigate(screen, props);
+  };
+  return <Search onNavigate={onNavigate} />;
 };

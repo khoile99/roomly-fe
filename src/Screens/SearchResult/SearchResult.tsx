@@ -1,5 +1,5 @@
 import { i18n, LocalizationKey } from "@/Localization";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,46 +10,43 @@ import {
   StyleSheet,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { Place } from "@/Services";
+import { Place, useLazyGetAllPlacesQuery } from "@/Services";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
-import { User } from "@/Services";
 
 export interface ISearchResult {
-  data: User | undefined;
-  isLoading: boolean;
+  search: string;
+  isType: Boolean;
 }
 
 export const SearchResult = (props: ISearchResult) => {
-  const { data, isLoading } = props;
+  const [places, setPlaces] = useState([] as Place[])
+  const [fetchPlaces, { data, isSuccess, isLoading, error }] =
+    useLazyGetAllPlacesQuery();
 
-  const searchResults = [
-    {
-      id: "1",
-      title: "Nhà trọ Bình Tân 1",
-      location: "Long Thạnh Mỹ, Quận 9",
-      price: "2.500.000",
-      area: "30 m²",
-      bedrooms: 1,
-      bathrooms: 1,
-      image: "https://via.placeholder.com/150", // Thay bằng link ảnh thật
-    },
-    {
-      id: "2",
-      title: "Nhà trọ Bình Tân 2",
-      location: "Long Thạnh Mỹ, Quận 9",
-      price: "2.500.000",
-      area: "30 m²",
-      bedrooms: 1,
-      bathrooms: 1,
-      image: "https://via.placeholder.com/150", // Thay bằng link ảnh thật
-    },
-    // Thêm dữ liệu khác...
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      fetchPlaces("");
+    };
+
+    fetchData();
+  }, [props.search, fetchPlaces]);
+
+  useEffect(() => {
+    var searchPlaces = [] as Place[]
+    if (data?.data) {
+      if (searchPlaces) {
+        searchPlaces = data?.data.filter((place) => place.typeRoom.toLowerCase().includes(props.search.toLowerCase()));
+      } else {
+        searchPlaces = data?.data.filter((place) => place.namePost.toLowerCase().includes(props.search.toLowerCase()));
+      }
+    }
+    setPlaces(searchPlaces);
+  }, [data]);
 
   const renderCard = (item: Place) => (
     <View style={styles.card}>
-      <Image source={{ uri: item.image }} style={styles.cardImage} />
+      <Image src={item.image} style={styles.cardImage} />
       <View style={styles.cardContent}>
         <Text style={styles.cardTitle}>{item.namePost}</Text>
         <Text style={styles.cardLocation}>
@@ -58,7 +55,6 @@ export const SearchResult = (props: ISearchResult) => {
         <Text style={styles.cardPrice}>{item.price} / tháng</Text>
         <View style={styles.cardInfo}>
           <Text>{item.bedroom} phòng ngủ</Text>
-          <Text>{item.comfort}</Text>
         </View>
       </View>
     </View>
@@ -77,28 +73,20 @@ export const SearchResult = (props: ISearchResult) => {
       ) : (
         <>
           <View style={styles.container}>
-            {/* Thanh tìm kiếm */}
-            <View style={styles.searchContainer}>
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Tìm kiếm tại đây . . ."
-              />
-              <TouchableOpacity style={styles.filterButton}>
-                <Icon name="filter-list" size={24} color="#fff" />
-              </TouchableOpacity>
-            </View>
-
             {/* Tiêu đề kết quả */}
             <Text style={styles.resultTitle}>
-              Kết quả tìm kiếm cho "nhà trọ quận 9"
+              Kết quả tìm kiếm cho "{props.search}"
             </Text>
-            <Text style={styles.resultCount}>50+ kết quả</Text>
+            <Text style={styles.resultCount}>{places.length} kết quả</Text>
 
             {/* Danh sách kết quả */}
             <FlatList
-              data={searchResults}
-              renderItem={renderCard}
-              keyExtractor={(item) => item.id}
+              data={places}
+              // renderItem={({ place }) => (renderCard(place))}
+              renderItem={({ item }) => (
+                renderCard(item)
+              )}
+              keyExtractor={(item) => item.id.toString()}
               contentContainerStyle={styles.listContainer}
             />
           </View>

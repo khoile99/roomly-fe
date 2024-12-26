@@ -3,16 +3,16 @@ import React, { useEffect, useState } from "react";
 import { useGetPlacesMutation } from "@/Services";
 import SecureStore from "@/Store/SecureStore";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ProfileScreens } from "..";
-import { ProfileStackParamList } from "@/Navigation/Main";
+import { HomeScreens } from "..";
+import { HomeStackParamList } from "@/Navigation/Main";
 import { useFocusEffect } from "@react-navigation/native";
 
 
 export const FavoriteContainer = ({ navigation,
-}: NativeStackScreenProps<ProfileStackParamList>) => {
+}: NativeStackScreenProps<HomeStackParamList>) => {
   const [accessToken, setAccessToken] = useState<string>("");
 
-  const onNavigate = (screen: ProfileScreens, props: any) => {
+  const onNavigate = (screen: HomeScreens, props: any) => {
     navigation.navigate(screen, props);
   };
   const [fetchPlaces, { data, isSuccess, isLoading, error }] =
@@ -35,7 +35,7 @@ export const FavoriteContainer = ({ navigation,
     };
 
     fetchData();
-  }, [fetchPlaces]);
+  }, [accessToken,fetchPlaces]);
 
   return <Favorite data={data?.posts} isLoading={isLoading} onNavigate={onNavigate} />;
 };

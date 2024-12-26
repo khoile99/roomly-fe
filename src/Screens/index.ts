@@ -18,7 +18,16 @@ export enum ProfileScreens {
   PROFILE_INFORMATION = "Profile Information",
   POST_MANAGE = "Post Manage",
   EDIT_POST = "Edit Post",
-  POST_DETAIL = "Post Detail",
   CHANGE_PASSWORD = "Change Password",
   LOGOUT = "Logout",
+}
+
+export enum HomeScreens {
+  HOME = "Home",
+  POST_DETAIL = "Post Detail",
+}
+
+export enum SearchScreens {
+  SEARCH = "Search",
+  SEARCH_RESULT = "Search Result",
 }

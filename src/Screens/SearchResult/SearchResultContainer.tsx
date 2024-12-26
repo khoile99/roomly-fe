@@ -1,16 +1,18 @@
+import { RouteProp, useRoute } from "@react-navigation/native";
 import { SearchResult } from "./SearchResult";
-import React, { useState, useEffect } from "react";
-import { useLazyGetUserQuery } from "@/Services";
+import React from "react";
+
+type RouteParams = {
+  SearchResult: {
+    search: string;
+    isType: Boolean;
+  };
+};
 
 export const SearchResultContainer = () => {
-  const [userId, setUserId] = useState("9");
+  const route = useRoute<RouteProp<RouteParams, "SearchResult">>();
+  const search = route.params.search || "";
+  const isType = route.params.isType || false;
 
-  const [fetchOne, { data, isSuccess, isLoading, isFetching, error }] =
-    useLazyGetUserQuery();
-
-  useEffect(() => {
-    fetchOne(userId);
-  }, [fetchOne, userId]);
-
-  return <SearchResult data={data} isLoading={isLoading} />;
+  return <SearchResult search={search} isType={isType} />;
 };

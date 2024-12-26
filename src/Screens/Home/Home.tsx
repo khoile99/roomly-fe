@@ -13,13 +13,13 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
 import { Place } from "@/Services";
-import { ProfileScreens } from "..";
+import { HomeScreens } from "..";
 
 
 export interface IHomeProps {
   data: Place[] | undefined;
   isLoading: boolean;
-  onNavigate: (string: ProfileScreens, props: any) => void;
+  onNavigate: (string: HomeScreens, props: any) => void;
 
 }
 
@@ -105,7 +105,7 @@ export const Home = (props: IHomeProps) => {
               style={styles.horizontalScroll}
             >
               {places.map((place, index) => (
-                <TouchableOpacity key={place.id} onPress={() => props.onNavigate(ProfileScreens.POST_DETAIL, { id: place.id })}>
+                <TouchableOpacity key={place.id} onPress={() => props.onNavigate(HomeScreens.POST_DETAIL, { id: place.id })}>
                   <View style={styles.card}>
                     <Image
                       src={place.image}
@@ -124,7 +124,7 @@ export const Home = (props: IHomeProps) => {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Những lựa chọn tốt nhất</Text>
             {topPlaces?.map((place, index) => (
-              <TouchableOpacity key={place.id} onPress={() => props.onNavigate(ProfileScreens.POST_DETAIL, { id: place.id })}>
+              <TouchableOpacity key={place.id} onPress={() => props.onNavigate(HomeScreens.POST_DETAIL, { id: place.id })}>
                 <View style={styles.listItem}>
                   <Image
                     src={place.image}

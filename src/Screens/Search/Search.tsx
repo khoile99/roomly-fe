@@ -11,103 +11,58 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { StatusBar } from "expo-status-bar";
-import { HStack, Spinner, Heading } from "native-base";
-import { User } from "@/Services";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SearchScreens } from "..";
 
 export interface ISearchProps {
-  data: User | undefined;
-  isLoading: boolean;
+  onNavigate: (string: SearchScreens, props: any) => void;
 }
 
 export const Search = (props: ISearchProps) => {
-  const { data, isLoading } = props;
-
-  const [searchHistory, setSearchHistory] = useState([
-    "nhà trọ quận 9",
-    "nhà trọ 2 phòng ngủ",
-    "chung cư tại quận 2",
-  ]);
+  const [search, setSearch] = React.useState("")
 
   const suggestions = [
-    { id: 1, name: "Nhà trọ", image: "https://example.com/image1.jpg" },
-    { id: 2, name: "Chung cư", image: "https://example.com/image2.jpg" },
-    { id: 3, name: "Căn hộ mini", image: "https://example.com/image3.jpg" },
-    {
-      id: 4,
-      name: "Thuê nhà nguyên căn",
-      image: "https://example.com/image4.jpg",
-    },
+    { id: 1, name: "Nhà trọ", image: "https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2022/8/17/1081975/Nha-Tro.jpg" },
+    { id: 2, name: "Chung cư", image: "https://hn.ss.bfcplatform.vn/tckt/2019/10/19A10003-2.jpg" },
+    { id: 3, name: "Căn hộ mini", image: "https://xaydungkienxanh.com/wp-content/uploads/2023/08/can-ho-gac-lung-4.jpg" },
+    { id: 4, name: "Nhà riêng", image: "https://vn.toto.com/wp-content/uploads/2024/07/thiet-ke-nha-20.jpg" },
   ];
-
-  const handleRemoveHistory = (index: number) => {
-    const newHistory = [...searchHistory];
-    newHistory.splice(index, 1);
-    setSearchHistory(newHistory);
-  };
 
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
-      {isLoading ? (
-        <HStack space={2} justifyContent="center">
-          <Spinner accessibilityLabel="Loading posts" />
-          <Heading color="primary.500" fontSize="md">
-            {i18n.t(LocalizationKey.LOADING)}
-          </Heading>
-        </HStack>
-      ) : (
-        <>
-          <ScrollView style={styles.container}>
-            {/* Thanh tìm kiếm */}
-            <View style={styles.searchContainer}>
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Tìm kiếm tại đây . . ."
-              />
-              <TouchableOpacity style={styles.filterButton}>
-                <Icon name="filter-list" size={24} color="#fff" />
+      <ScrollView style={styles.container}>
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Tìm kiếm tại đây . . ."
+            value={search}
+            onChangeText={(newText) => setSearch(newText)}
+          />
+          <TouchableOpacity style={styles.filterButton} onPress={() => { props.onNavigate(SearchScreens.SEARCH_RESULT, { search: search, isType: false }) }}>
+            <Icon name="search" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.suggestionsContainer}>
+          <Text style={styles.suggestionsTitle}>
+            Có thể bạn sẽ muốn tìm kiếm
+          </Text>
+          <FlatList
+            data={suggestions}
+            horizontal={true}
+            numColumns={1}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.suggestionCard} onPress={() => props.onNavigate(SearchScreens.SEARCH_RESULT, { search: item.name, isType: true })}>
+                <Image
+                  source={{ uri: item.image }}
+                  style={styles.suggestionImage}
+                />
+                <Text style={styles.suggestionText}>{item.name}</Text>
               </TouchableOpacity>
-            </View>
-
-            {/* Lịch sử tìm kiếm */}
-            <View style={styles.historyContainer}>
-              <Text style={styles.historyTitle}>Lịch sử tìm kiếm</Text>
-              {searchHistory.map((item, index) => (
-                <View key={index} style={styles.historyItem}>
-                  <Text style={styles.historyText}>{item}</Text>
-                  <TouchableOpacity onPress={() => handleRemoveHistory(index)}>
-                    <Text style={styles.removeText}>X</Text>
-                  </TouchableOpacity>
-                </View>
-              ))}
-            </View>
-
-            {/* Danh sách đề xuất */}
-            <View style={styles.suggestionsContainer}>
-              <Text style={styles.suggestionsTitle}>
-                Có thể bạn sẽ muốn tìm kiếm
-              </Text>
-              <FlatList
-                data={suggestions}
-                horizontal={true}
-                numColumns={1}
-                renderItem={({ item }) => (
-                  <TouchableOpacity style={styles.suggestionCard}>
-                    <Image
-                      source={{ uri: item.image }}
-                      style={styles.suggestionImage}
-                    />
-                    <Text style={styles.suggestionText}>{item.name}</Text>
-                  </TouchableOpacity>
-                )}
-                keyExtractor={(item) => item.id.toString()}
-              />
-            </View>
-          </ScrollView>
-        </>
-      )}
+            )}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 };

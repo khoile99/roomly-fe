@@ -11,12 +11,14 @@ import SearchIcon from "assets/search-icon";
 import PostIcon from "assets/post-icon";
 import FavoriteIcon from "assets/favorite-icon";
 import ProfileIcon from "assets/profile-icon";
-import { ProfileScreens, MainScreens } from "@/Screens";
+import { HomeScreens, ProfileScreens, MainScreens, SearchScreens } from "@/Screens";
 import { ProfileInformationContainer } from "@/Screens/ProfileInformation";
 import { ChangePasswordContainer } from "@/Screens/ChangePassword";
 import { LogoutContainer } from "@/Screens/Logout";
 import { PostManageContainer } from "@/Screens/PostManage";
 import { EditPostContainer } from "@/Screens/EditPost";
+import { PostDetailContainer } from "@/Screens/PostDetail";
+import { SearchResultContainer } from "@/Screens/SearchResult";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,9 +29,19 @@ export type ProfileStackParamList = {
   [ProfileScreens.CHANGE_PASSWORD]: undefined;
   [ProfileScreens.LOGOUT]: undefined;
   [ProfileScreens.EDIT_POST]: undefined;
-  [ProfileScreens.POST_DETAIL]: undefined;
+};
+export type HomeStackParamList = {
+  [HomeScreens.HOME]: undefined;
+  [HomeScreens.POST_DETAIL]: undefined;
+};
+export type SearchStackParamList = {
+  [SearchScreens.SEARCH]: undefined;
+  [SearchScreens.SEARCH_RESULT]: undefined;
 };
 const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
+const HomeStack = createNativeStackNavigator<HomeStackParamList>();
+const SearchStack = createNativeStackNavigator<SearchStackParamList>();
+
 
 // @refresh reset
 export const MainNavigator = () => {
@@ -37,22 +49,24 @@ export const MainNavigator = () => {
     <Tab.Navigator>
       <Tab.Screen
         name={MainScreens.HOME}
-        component={HomeContainer}
+        children={HomeNavigator}
         options={{
           tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ size, focused, color }) => {
             return HomeIcon(color);
           },
+          headerShown: false,
         }}
       />
       <Tab.Screen
         name={MainScreens.SEARCH}
-        component={SearchContainer}
+        children={SearchNavigator}
         options={{
           tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ size, focused, color }) => {
             return SearchIcon(color);
           },
+          headerShown: false
         }}
       />
       <Tab.Screen
@@ -118,5 +132,35 @@ const ProfileNavigator = () => {
         component={EditPostContainer}
       />
     </ProfileStack.Navigator>
+  );
+};
+
+const HomeNavigator = () => {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name={HomeScreens.HOME}
+        component={HomeContainer}
+      />
+      <HomeStack.Screen
+        name={HomeScreens.POST_DETAIL}
+        component={PostDetailContainer}
+      />
+    </HomeStack.Navigator>
+  );
+};
+
+const SearchNavigator = () => {
+  return (
+    <SearchStack.Navigator>
+      <SearchStack.Screen
+        name={SearchScreens.SEARCH}
+        component={SearchContainer}
+      />
+      <SearchStack.Screen
+        name={SearchScreens.SEARCH_RESULT}
+        component={SearchResultContainer}
+      />
+    </SearchStack.Navigator>
   );
 };

@@ -1,8 +1,8 @@
 import { API } from "../base";
 
-interface PlacesResponse {
+interface PlacesResponse<T> {
   success: Boolean,
-  data: Place[],
+  data: T,
 }
 
 export interface Place {
@@ -135,11 +135,14 @@ const placeAPI = API.injectEndpoints({
         }
       }),
     }),
-    getAllPlaces: build.query<PlacesResponse, string>({
+    getAllPlaces: build.query<PlacesResponse<Place[]>, string>({
       query: () => `post/get-alls`,
+    }),
+    getPlace: build.query<PlacesResponse<Place>, string>({
+      query: (id) => `post/get-post/${id}`,
     }),
   }),
   overrideExisting: true,
 });
 
-export const { useGetPlacesMutation, useUpdatePlace1Mutation, useUpdatePlace2Mutation, useUpdatePlace3Mutation, useCreatePlace1Mutation, useCreatePlace2Mutation, useCreatePlace3Mutation, useLazyGetAllPlacesQuery } = placeAPI;
+export const { useGetPlacesMutation, useUpdatePlace1Mutation, useUpdatePlace2Mutation, useUpdatePlace3Mutation, useCreatePlace1Mutation, useCreatePlace2Mutation, useCreatePlace3Mutation, useLazyGetAllPlacesQuery, useLazyGetPlaceQuery } = placeAPI;
