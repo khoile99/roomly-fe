@@ -10,13 +10,10 @@ import {
   ScrollView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { StatusBar } from "expo-status-bar";
-import { HStack, Spinner, Heading } from "native-base";
-import SecureStore from "@/Store/SecureStore";
 import { ResponseFail, useCreatePlace1Mutation, useCreatePlace2Mutation, useCreatePlace3Mutation } from "@/Services";
 
 
-export const Post = () => {
+export const Post = (props: { accessToken: string }) => {
   const [step, setStep] = useState(1); // Quản lý bước hiện tại của form
   const [createPlace1, { isLoading: isLoadingStep1, isError, error }] = useCreatePlace1Mutation();
   const [createPlace2, { isLoading: isLoadingStep2, isError: isError2, error: error2 }] = useCreatePlace2Mutation();
@@ -44,7 +41,6 @@ export const Post = () => {
   };
 
   const onNext = async (step: number) => {
-    const accessToken = await SecureStore.getAccessToken();
     switch (step) {
       case 2:
         try {
@@ -55,7 +51,7 @@ export const Post = () => {
             deposit: formData.deposit,
             description: formData.description
           }
-          const response = await createPlace1({ accessToken: accessToken, body: data }).unwrap();
+          const response = await createPlace1({ accessToken: props.accessToken, body: data }).unwrap();
           alert(response.message);
           setStep(step)
         } catch (err) {
@@ -75,7 +71,7 @@ export const Post = () => {
             bathroom: formData.bathroom,
             comfort: formData.comfort,
           }
-          const response = await createPlace2({ accessToken: accessToken, body: data }).unwrap();
+          const response = await createPlace2({ accessToken: props.accessToken, body: data }).unwrap();
           alert(response.message);
           setStep(step)
         } catch (err) {
@@ -89,11 +85,13 @@ export const Post = () => {
         return;
       case 4:
         try {
-          const response = await createPlace3({ accessToken: accessToken }).unwrap();
-          alert(response.message);
-          setStep(step)
+          const response = await createPlace3({ accessToken: props.accessToken }).unwrap();
+          if (response.success)
+            alert(response.message);
+          else {
+            alert(response.error);
+          }
         } catch (err) {
-          console.log(err);
           const error = err as ResponseFail;
           if (error.data.message) {
             alert(error.data.message);

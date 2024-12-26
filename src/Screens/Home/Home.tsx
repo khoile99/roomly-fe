@@ -68,15 +68,6 @@ export const Home = (props: IHomeProps) => {
             <Icon name="bell" size={20} color="#000" />
           </View>
 
-          <View style={styles.searchContainer}>
-            <Icon name="search" size={16} color="#ccc" />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Tìm kiếm chỗ ở gần bạn ..."
-            />
-            <Icon name="sliders-h" size={16} color="#5db0ff" />
-          </View>
-
           <View style={styles.filterTabs}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {placeTypes.map((item, index) => (

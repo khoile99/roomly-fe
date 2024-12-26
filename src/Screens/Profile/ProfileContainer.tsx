@@ -44,7 +44,7 @@ export const ProfileContainer = ({
     };
 
     fetchData();
-  }, [fetchUser]);
+  }, [accessToken]);
 
   if (!accessToken) {
     return <NotLogin onNavigate={onNavigateRootScreen} />;

@@ -57,7 +57,9 @@ interface UpdatePlace2Response {
 
 interface UpdatePlace3Response {
   message: string,
-  post: Place
+  post: Place,
+  error: string,
+  success: Boolean,
 }
 
 interface Response<T> {

@@ -1,9 +1,22 @@
+import { useFocusEffect } from "@react-navigation/native";
 import { Post } from "./Post";
-import React, { useState, useEffect } from "react";
-import { useGetUserMutation } from "@/Services";
+import React, { useState } from "react";
 import SecureStore from "@/Store/SecureStore";
 
 export const PostContainer = () => {
+  const [accessToken, setAccessToken] = useState<string>("");
 
-  return <Post />;
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchAccessToken = async () => {
+        const token = await SecureStore.getAccessToken();
+        setAccessToken(token);
+      };
+      fetchAccessToken();
+    }, [])
+  );
+
+  if (accessToken)
+    return <Post accessToken={accessToken}/>;
 };

@@ -35,7 +35,8 @@ export const FavoriteContainer = ({ navigation,
     };
 
     fetchData();
-  }, [accessToken,fetchPlaces]);
+  }, [accessToken]);
 
-  return <Favorite data={data?.posts} isLoading={isLoading} onNavigate={onNavigate} />;
+  if (accessToken)
+    return <Favorite data={data?.posts} isLoading={isLoading} onNavigate={onNavigate} />;
 };

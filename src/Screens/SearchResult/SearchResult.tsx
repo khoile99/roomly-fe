@@ -18,7 +18,7 @@ import { SearchScreens } from "..";
 export interface ISearchResult {
   search: string;
   isType: Boolean;
-  onNavigate: (string: SearchScreens, props: any) => void;
+  onNavigate: (screen: SearchScreens, props: any) => void;
 }
 
 export const SearchResult = (props: ISearchResult) => {
@@ -37,7 +37,7 @@ export const SearchResult = (props: ISearchResult) => {
   useEffect(() => {
     var searchPlaces = [] as Place[]
     if (data?.data) {
-      if (searchPlaces) {
+      if (props.isType) {
         searchPlaces = data?.data.filter((place) => place.typeRoom.toLowerCase().includes(props.search.toLowerCase()));
       } else {
         searchPlaces = data?.data.filter((place) => place.namePost.toLowerCase().includes(props.search.toLowerCase()));
