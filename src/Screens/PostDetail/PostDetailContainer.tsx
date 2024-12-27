@@ -22,7 +22,7 @@ export const PostDetailContainer = () => {
     };
 
     fetchData();
-  }, [id, fetchPlace]);
+  }, [fetchPlace]);
 
   if (data?.data)
     return <PostDetail data={data?.data} isLoading={isLoading} />;
