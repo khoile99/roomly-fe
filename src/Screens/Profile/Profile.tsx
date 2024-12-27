@@ -20,7 +20,9 @@ export interface IProfileProps {
 export const Profile = (props: IProfileProps) => {
   const { isLoading } = props;
   const [user, setUser] = useState<User>();
-  store.subscribe(() => { setUser(store.getState().user.user) })
+  store.subscribe(() => {
+    setUser(store.getState().user.user);
+  });
 
   return (
     <View style={styles.container}>
@@ -34,15 +36,42 @@ export const Profile = (props: IProfileProps) => {
         </HStack>
       ) : (
         <>
-          <Image src="https://studiochupanhdep.com/Upload/Images/Album/anh-cv-02.jpg" style={styles.img}></Image>
+          <Image
+            src="https://studiochupanhdep.com/Upload/Images/Album/anh-cv-02.jpg"
+            style={styles.img}
+          ></Image>
           <Heading fontSize="md" style={styles.usernameTxt}>
             {`${user?.lName} ${user?.fName}`}
           </Heading>
           <View style={styles.navigatorList}>
-            <ProfileNavigator onPress={() => { props.onNavigate(ProfileScreens.PROFILE_INFORMATION) }} title={i18n.t(LocalizationKey.PERSONAL_INFORMATION)} icon={RounderProfileIcon}></ProfileNavigator>
-            <ProfileNavigator onPress={() => { props.onNavigate(ProfileScreens.POST_MANAGE) }} title={i18n.t(LocalizationKey.POST_MANAGE)} icon={FeatherIcon}></ProfileNavigator>
-            <ProfileNavigator onPress={() => { props.onNavigate(ProfileScreens.CHANGE_PASSWORD) }} title={i18n.t(LocalizationKey.CHANGE_PASSWORD)} icon={LockIcon}></ProfileNavigator>
-            <ProfileNavigator onPress={() => { props.onNavigate(ProfileScreens.LOGOUT) }} title={i18n.t(LocalizationKey.LOGOUT)} icon={LogoutIcon}></ProfileNavigator>
+            <ProfileNavigator
+              onPress={() => {
+                props.onNavigate(ProfileScreens.PROFILE_INFORMATION);
+              }}
+              title={i18n.t(LocalizationKey.PERSONAL_INFORMATION)}
+              icon={RounderProfileIcon}
+            ></ProfileNavigator>
+            <ProfileNavigator
+              onPress={() => {
+                props.onNavigate(ProfileScreens.POST_MANAGE);
+              }}
+              title={i18n.t(LocalizationKey.POST_MANAGE)}
+              icon={FeatherIcon}
+            ></ProfileNavigator>
+            <ProfileNavigator
+              onPress={() => {
+                props.onNavigate(ProfileScreens.CHANGE_PASSWORD);
+              }}
+              title={i18n.t(LocalizationKey.CHANGE_PASSWORD)}
+              icon={LockIcon}
+            ></ProfileNavigator>
+            <ProfileNavigator
+              onPress={() => {
+                props.onNavigate(ProfileScreens.LOGOUT);
+              }}
+              title={i18n.t(LocalizationKey.LOGOUT)}
+              icon={LogoutIcon}
+            ></ProfileNavigator>
           </View>
         </>
       )}
@@ -62,12 +91,12 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     objectFit: "cover",
-    borderRadius: "50%",
+    borderRadius: 60,
   },
   usernameTxt: {
     marginTop: 20,
   },
   navigatorList: {
     marginTop: 50,
-  }
+  },
 });

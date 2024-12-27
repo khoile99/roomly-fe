@@ -16,19 +16,23 @@ export interface IProfileInformationProps {
 }
 
 export const ProfileInformation = (props: IProfileInformationProps) => {
-  const [changeInfo, { isLoading: isChangeLoading, isError, error }] = useChangeInfoMutation();
+  const [changeInfo, { isLoading: isChangeLoading, isError, error }] =
+    useChangeInfoMutation();
   const { data, isLoading } = props;
   let [user, setUser] = React.useState(data);
   let previousUser = data;
   const [edit, setEdit] = React.useState(false);
   const onCancle = () => {
     setEdit(false);
-  }
+  };
   const onSave = async () => {
     try {
       var payload = { fName: user.fName, lName: user.lName, email: user.email };
       const accessToken = await SecureStore.getAccessToken();
-      const response = await changeInfo({ accessToken: accessToken, body: payload }).unwrap();
+      const response = await changeInfo({
+        accessToken: accessToken,
+        body: payload,
+      }).unwrap();
       store.dispatch(changeUser(response.data));
       setUser(response.data);
       previousUser = response.data;
@@ -40,10 +44,10 @@ export const ProfileInformation = (props: IProfileInformationProps) => {
       if (error.data.message) {
         alert(error.data.message);
       } else {
-        alert(i18n.t(LocalizationKey.CHANGE_PASSWORD_FAIL))
+        alert(i18n.t(LocalizationKey.CHANGE_PASSWORD_FAIL));
       }
     }
-  }
+  };
   return (
     <ScrollView>
       <StatusBar style="auto" />
@@ -56,22 +60,55 @@ export const ProfileInformation = (props: IProfileInformationProps) => {
         </HStack>
       ) : (
         <View style={styles.container}>
-          <Image src="https://studiochupanhdep.com/Upload/Images/Album/anh-cv-02.jpg" style={styles.img}></Image>
+          <Image
+            src="https://studiochupanhdep.com/Upload/Images/Album/anh-cv-02.jpg"
+            style={styles.img}
+          ></Image>
           <View style={styles.innerContainer}>
             <View>
-              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.LAST_NAME)}</Text>
-              <TextInput style={styles.input} editable={edit} onChangeText={(newText) => setUser((prev) => ({ ...prev, lName: newText }))}>{user.lName}</TextInput>
+              <Text style={styles.txtHeader}>
+                {i18n.t(LocalizationKey.LAST_NAME)}
+              </Text>
+              <TextInput
+                style={styles.input}
+                editable={edit}
+                onChangeText={(newText) =>
+                  setUser((prev) => ({ ...prev, lName: newText }))
+                }
+              >
+                {user.lName}
+              </TextInput>
             </View>
             <View>
-              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.FIRST_NAME)}</Text>
-              <TextInput style={styles.input} editable={edit} onChangeText={(newText) => setUser((prev) => ({ ...prev, fName: newText }))}>{user.fName}</TextInput>
+              <Text style={styles.txtHeader}>
+                {i18n.t(LocalizationKey.FIRST_NAME)}
+              </Text>
+              <TextInput
+                style={styles.input}
+                editable={edit}
+                onChangeText={(newText) =>
+                  setUser((prev) => ({ ...prev, fName: newText }))
+                }
+              >
+                {user.fName}
+              </TextInput>
             </View>
             <View>
-              <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.EMAIL)}</Text>
-              <TextInput style={styles.input} editable={edit} onChangeText={(newText) => setUser((prev) => ({ ...prev, email: newText }))}>{user.email}</TextInput>
+              <Text style={styles.txtHeader}>
+                {i18n.t(LocalizationKey.EMAIL)}
+              </Text>
+              <TextInput
+                style={styles.input}
+                editable={edit}
+                onChangeText={(newText) =>
+                  setUser((prev) => ({ ...prev, email: newText }))
+                }
+              >
+                {user.email}
+              </TextInput>
             </View>
-            {edit ?
-              (<>
+            {edit ? (
+              <>
                 <Button style={styles.btn} onPress={() => onSave()}>
                   {i18n.t(LocalizationKey.SAVE)}
                 </Button>
@@ -86,26 +123,42 @@ export const ProfileInformation = (props: IProfileInformationProps) => {
                 <Button style={styles.btn} onPress={() => onCancle()}>
                   {i18n.t(LocalizationKey.CANCLE)}
                 </Button>
-              </>) : (<>
+              </>
+            ) : (
+              <>
                 <View>
-                  <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.PHONE_NUMBER)}</Text>
-                  <TextInput style={styles.input} editable={edit} onChangeText={newText => user.phone = newText}>{user.phone}</TextInput>
+                  <Text style={styles.txtHeader}>
+                    {i18n.t(LocalizationKey.PHONE_NUMBER)}
+                  </Text>
+                  <TextInput
+                    style={styles.input}
+                    editable={edit}
+                    onChangeText={(newText) => (user.phone = newText)}
+                  >
+                    {user.phone}
+                  </TextInput>
                 </View>
                 <View>
-                  <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.CREATED_DATE)}</Text>
-                  <TextInput style={styles.input} editable={edit} onChangeText={newText => user.createdAt = newText}>{user.createdAt}</TextInput>
+                  <Text style={styles.txtHeader}>
+                    {i18n.t(LocalizationKey.CREATED_DATE)}
+                  </Text>
+                  <TextInput
+                    style={styles.input}
+                    editable={edit}
+                    onChangeText={(newText) => (user.createdAt = newText)}
+                  >
+                    {user.createdAt}
+                  </TextInput>
                 </View>
                 <Button style={styles.btn} onPress={() => setEdit(true)}>
                   {i18n.t(LocalizationKey.EDIT)}
                 </Button>
               </>
-              )
-            }
+            )}
           </View>
         </View>
-      )
-      }
-    </ScrollView >
+      )}
+    </ScrollView>
   );
 };
 
@@ -121,7 +174,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     objectFit: "cover",
-    borderRadius: "50%",
+    borderRadius: 60,
   },
   innerContainer: {
     marginTop: 30,
@@ -136,7 +189,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     padding: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   btn: {
     borderRadius: 16,

@@ -7,38 +7,73 @@ import { useChangePasswordMutation, Message } from "@/Services";
 import SecureStore from "@/Store/SecureStore";
 
 export const ChangePassword = () => {
-  const [changePassword, { isLoading, isError, error }] = useChangePasswordMutation();
-  const [data, setData] = React.useState({ old_password: "", new_password: "" });
-  const [password, setPassword] = React.useState("")
+  const [changePassword, { isLoading, isError, error }] =
+    useChangePasswordMutation();
+  const [data, setData] = React.useState({
+    old_password: "",
+    new_password: "",
+  });
+  const [password, setPassword] = React.useState("");
   const onChangePassword = async () => {
     try {
       const accessToken = await SecureStore.getAccessToken();
-      const response = await changePassword({ accessToken: accessToken, body: data }).unwrap();
+      const response = await changePassword({
+        accessToken: accessToken,
+        body: data,
+      }).unwrap();
       alert(response.message);
     } catch (err) {
       const error = err as Message;
       if (error.message) {
         alert(error.message);
       } else {
-        alert(i18n.t(LocalizationKey.CHANGE_PASSWORD_FAIL))
+        alert(i18n.t(LocalizationKey.CHANGE_PASSWORD_FAIL));
       }
     }
-  }
+  };
   return (
     <View style={styles.container}>
-      <Image src="https://studiochupanhdep.com/Upload/Images/Album/anh-cv-02.jpg" style={styles.img}></Image>
+      <Image
+        src="https://studiochupanhdep.com/Upload/Images/Album/anh-cv-02.jpg"
+        style={styles.img}
+      ></Image>
       <View style={styles.innerContainer}>
         <View>
-          <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.OLD_PASSWORD)}</Text>
-          <TextInput style={styles.input} value={data.old_password} onChangeText={(newText) => setData((prev) => ({ ...prev, old_password: newText }))} secureTextEntry></TextInput>
+          <Text style={styles.txtHeader}>
+            {i18n.t(LocalizationKey.OLD_PASSWORD)}
+          </Text>
+          <TextInput
+            style={styles.input}
+            value={data.old_password}
+            onChangeText={(newText) =>
+              setData((prev) => ({ ...prev, old_password: newText }))
+            }
+            secureTextEntry
+          ></TextInput>
         </View>
         <View>
-          <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.NEW_PASSWORD)}</Text>
-          <TextInput style={styles.input} value={data.new_password} onChangeText={(newText) => setData((prev) => ({ ...prev, new_password: newText }))} secureTextEntry></TextInput>
+          <Text style={styles.txtHeader}>
+            {i18n.t(LocalizationKey.NEW_PASSWORD)}
+          </Text>
+          <TextInput
+            style={styles.input}
+            value={data.new_password}
+            onChangeText={(newText) =>
+              setData((prev) => ({ ...prev, new_password: newText }))
+            }
+            secureTextEntry
+          ></TextInput>
         </View>
         <View>
-          <Text style={styles.txtHeader}>{i18n.t(LocalizationKey.ENTER_NEW_PASSWORD_AGAIN)}</Text>
-          <TextInput style={styles.input} value={password} onChangeText={(newText) => setPassword(newText)} secureTextEntry></TextInput>
+          <Text style={styles.txtHeader}>
+            {i18n.t(LocalizationKey.ENTER_NEW_PASSWORD_AGAIN)}
+          </Text>
+          <TextInput
+            style={styles.input}
+            value={password}
+            onChangeText={(newText) => setPassword(newText)}
+            secureTextEntry
+          ></TextInput>
         </View>
         <Button style={styles.btn} onPress={() => onChangePassword()}>
           {i18n.t(LocalizationKey.CHANGE_PASSWORD)}
@@ -53,7 +88,7 @@ export const ChangePassword = () => {
         )}
       </View>
     </View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
@@ -68,7 +103,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     objectFit: "cover",
-    borderRadius: "50%",
+    borderRadius: 60,
   },
   innerContainer: {
     marginTop: 30,
@@ -83,7 +118,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     padding: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   btn: {
     borderRadius: 16,
