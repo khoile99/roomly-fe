@@ -62,6 +62,13 @@ interface UpdatePlace3Response {
   success: Boolean,
 }
 
+interface CreatePlace3Response {
+  message: string,
+  user: Place,
+  error: string,
+  success: Boolean,
+}
+
 interface Response<T> {
   posts: T
 }
@@ -127,7 +134,7 @@ const placeAPI = API.injectEndpoints({
         }
       }),
     }),
-    createPlace3: build.mutation<UpdatePlace3Response, { accessToken: string }>({
+    createPlace3: build.mutation<CreatePlace3Response, { accessToken: string }>({
       query: ({ accessToken }) => ({
         url: `post/create/step3`,
         method: "POST",

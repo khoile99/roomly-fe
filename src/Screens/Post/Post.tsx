@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { ResponseFail, useCreatePlace1Mutation, useCreatePlace2Mutation, useCreatePlace3Mutation } from "@/Services";
+import { store } from "@/Store";
+import { addPlace } from "@/Store/reducers/place";
 
 
 export const Post = (props: { accessToken: string }) => {
@@ -18,8 +20,7 @@ export const Post = (props: { accessToken: string }) => {
   const [createPlace1, { isLoading: isLoadingStep1, isError, error }] = useCreatePlace1Mutation();
   const [createPlace2, { isLoading: isLoadingStep2, isError: isError2, error: error2 }] = useCreatePlace2Mutation();
   const [createPlace3, { isLoading: isLoadingStep3, isError: isError3, error: error3 }] = useCreatePlace3Mutation();
-
-  const [formData, setFormData] = useState({
+  const newForm = {
     namePost: "",
     typeRoom: "",
     price: 0,
@@ -29,7 +30,9 @@ export const Post = (props: { accessToken: string }) => {
     bedroom: 0,
     bathroom: 0,
     comfort: "",
-  });
+  }
+
+  const [formData, setFormData] = useState(newForm);
   const amenities = ["TV", "Máy lạnh", "Tủ lạnh", "Máy giặt", "Wifi"];
 
   const toggleAmenity = (item: string) => {
@@ -86,8 +89,12 @@ export const Post = (props: { accessToken: string }) => {
       case 4:
         try {
           const response = await createPlace3({ accessToken: props.accessToken }).unwrap();
-          if (response.success)
+          if (response.success) {
+            store.dispatch(addPlace(response.user))
             alert(response.message);
+            setStep(1);
+            setFormData(newForm);
+          }
           else {
             alert(response.error);
           }

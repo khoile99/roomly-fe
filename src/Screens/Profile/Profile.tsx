@@ -20,7 +20,7 @@ export interface IProfileProps {
 export const Profile = (props: IProfileProps) => {
   const { isLoading } = props;
   const [user, setUser] = useState<User>();
-  store.subscribe(() => setUser(store.getState().user.user))
+  store.subscribe(() => { setUser(store.getState().user.user) })
 
   return (
     <View style={styles.container}>

@@ -123,7 +123,7 @@ export const Home = (props: IHomeProps) => {
                   />
                   <View>
                     <Text style={styles.listName}>{place.namePost}</Text>
-                    <Text style={styles.listPrice}>${place.price} / tháng</Text>
+                    <Text style={styles.listPrice}>{place.price} VND/tháng</Text>
                     <Text style={styles.listDetails}>{place.bedroom} phòng ngủ</Text>
                   </View>
                 </View>

@@ -56,7 +56,7 @@ export const PostDetail = (props: IPostDetailProps) => {
             <Text style={styles.roomTitle}>
               {props.data.namePost}
             </Text>
-            <Text style={styles.roomPrice}>${props.data.price} /tháng</Text>
+            <Text style={styles.roomPrice}>${props.data.price} VND/tháng</Text>
             <Text style={styles.roomLocation}>
               <Icon name="place" size={16} color="#555" />{props.data.address}
             </Text>

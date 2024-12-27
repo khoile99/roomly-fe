@@ -7,16 +7,19 @@ const slice = createSlice({
     places: [] as Array<Place>,
   },
   reducers: {
-    setDefaultPlace: (state, { payload: { places } }) => {
+    changePlaces: (state, action) => {
+      state.places = action.payload;
+    },
+    setDefaultPlaces: (state, { payload: { places } }) => {
       state.places = places;
     },
     addPlace: (state, { payload }) => {
       state.places.push(payload);
     },
-    changePlace: (state, { payload: { id, place } }) => {
-      for (let p of state.places) {
-        if (p.id == id) {
-          p = place
+    changePlace: (state, { payload }) => {
+      for (let i in state.places) {
+        if (state.places[i].id == payload.id) {
+          state.places[i] = payload
         }
       }
     },
@@ -30,5 +33,5 @@ const slice = createSlice({
   },
 });
 
-export const { setDefaultPlace, addPlace, changePlace, removePlace } = slice.actions;
+export const { changePlaces, setDefaultPlaces, addPlace, changePlace, removePlace } = slice.actions;
 export const placeReducers = slice.reducer;

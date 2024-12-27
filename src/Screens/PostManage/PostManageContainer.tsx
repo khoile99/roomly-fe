@@ -5,6 +5,8 @@ import SecureStore from "@/Store/SecureStore";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ProfileStackParamList } from "@/Navigation/Main";
 import { ProfileScreens } from "..";
+import { store } from "@/Store";
+import { changePlaces } from "@/Store/reducers/place";
 
 
 export const PostManageContainer = ({
@@ -19,11 +21,12 @@ export const PostManageContainer = ({
   useEffect(() => {
     const fetchData = async () => {
       const accessToken = await SecureStore.getAccessToken();
-      fetchPlaces({ accessToken });
+      var data = await fetchPlaces({ accessToken }).unwrap();
+      store.dispatch(changePlaces(data.posts))
     };
 
     fetchData();
   }, [fetchPlaces]);
 
-  return <PostManage places={data?.posts} isLoading={false} onNavigate={onNavigateProfileScreen} />;
+  return <PostManage isLoading={isLoading} onNavigate={onNavigateProfileScreen} />;
 };

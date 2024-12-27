@@ -24,7 +24,7 @@ export const PlaceCard = (props:
           <PlaceMarkerIcon />
           <Text style={styles.addressTxt}>{props.place.address}</Text>
         </View>
-        <Text style={styles.price}>$ {props.place.price} / {i18n.t(LocalizationKey.MONTH)}</Text>
+        <Text style={styles.price}>{props.place.price} VND/ {i18n.t(LocalizationKey.MONTH)}</Text>
       </View>
       {props.showEdit &&
         <View style={styles.btnContainer}>

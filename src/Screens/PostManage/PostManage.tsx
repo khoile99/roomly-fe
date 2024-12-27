@@ -1,20 +1,23 @@
 import { i18n, LocalizationKey } from "@/Localization";
-import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
 import { Place } from "@/Services";
 import { PlaceCard } from "@/Components/PlaceCard";
 import { ProfileScreens } from "..";
+import { store } from "@/Store";
 
 export interface IManagePostProps {
-  places: Place[] | undefined;
   isLoading: boolean;
   onNavigate: (string: ProfileScreens, props: any) => void;
 }
 
 export const PostManage = (props: IManagePostProps) => {
-  const { places, isLoading } = props;
+  const { isLoading } = props;
+  const [places, setPlaces] = useState<Place[]>([]);
+  store.subscribe(() => setPlaces(store.getState().place.places))
+
   return (
     <ScrollView>
       <StatusBar style="auto" />
