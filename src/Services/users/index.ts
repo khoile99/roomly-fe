@@ -49,6 +49,18 @@ interface UpdateUserResponse extends Message {
   data: User;
 }
 
+interface RegisterResponse {
+  message: string,
+  otp: string
+}
+interface RegisterRequest {
+  fName: string,
+  lName: string,
+  email: string,
+  phone: string,
+  password: string,
+}
+
 const userApi = API.injectEndpoints({
   endpoints: (build) => ({
     getUser: build.mutation<UserResponse, { accessToken: string }>({
@@ -87,8 +99,15 @@ const userApi = API.injectEndpoints({
         }
       }),
     }),
+    register1: build.mutation<RegisterResponse, RegisterRequest>({
+      query: (body) => ({
+        url: "user/register/step1",
+        method: "POST",
+        body: body,
+      }),
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useGetUserMutation, useLoginMutation, useChangePasswordMutation, useChangeInfoMutation } = userApi;
+export const { useGetUserMutation, useLoginMutation, useChangePasswordMutation, useChangeInfoMutation, useRegister1Mutation } = userApi;
